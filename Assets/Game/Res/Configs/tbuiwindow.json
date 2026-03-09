@@ -1,0 +1,68 @@
+[
+  {
+    "id": 101,
+    "desc": "存档选择界面",
+    "windowName": "UISelectArchiveWindow",
+    "isNeedBlackMask": false,
+    "isClickBlankQuit": false,
+    "enterAnimType": 1,
+    "exitAnimType": 1,
+    "liftState": 1,
+    "destroyTime": 120
+  },
+  {
+    "id": 102,
+    "desc": "创建新存档界面",
+    "windowName": "UINewGameWindow",
+    "isNeedBlackMask": true,
+    "isClickBlankQuit": true,
+    "enterAnimType": 1,
+    "exitAnimType": 1,
+    "liftState": 1,
+    "destroyTime": 120
+  },
+  {
+    "id": 1001,
+    "desc": "主界面窗口",
+    "windowName": "UIMainHud",
+    "isNeedBlackMask": true,
+    "isClickBlankQuit": true,
+    "enterAnimType": 1,
+    "exitAnimType": 1,
+    "liftState": 1,
+    "destroyTime": 120
+  },
+  {
+    "id": 2001,
+    "desc": "副本HUD",
+    "windowName": "UIDungeonSelectWindow",
+    "isNeedBlackMask": false,
+    "isClickBlankQuit": false,
+    "enterAnimType": 1,
+    "exitAnimType": 1,
+    "liftState": 1,
+    "destroyTime": 120
+  },
+  {
+    "id": 3001,
+    "desc": "战斗HUD",
+    "windowName": "UIBattleHud",
+    "isNeedBlackMask": false,
+    "isClickBlankQuit": false,
+    "enterAnimType": 1,
+    "exitAnimType": 1,
+    "liftState": 1,
+    "destroyTime": 120
+  },
+  {
+    "id": 4001,
+    "desc": "战斗胜利界面",
+    "windowName": "UIBattleVictoryWindow",
+    "isNeedBlackMask": false,
+    "isClickBlankQuit": false,
+    "enterAnimType": 1,
+    "exitAnimType": 1,
+    "liftState": 1,
+    "destroyTime": 120
+  }
+]

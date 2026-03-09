@@ -1,0 +1,22 @@
+[
+  {
+    "Key": "COMMON_WELCOME",
+    "CN": "欢迎来到July的Demo工程"
+  },
+  {
+    "Key": "BATTLE_VICTORY",
+    "CN": "战斗胜利"
+  },
+  {
+    "Key": "COMMON_CONTINUE",
+    "CN": "继续"
+  },
+  {
+    "Key": "COMMON_ROUND",
+    "CN": "回合数:{0}"
+  },
+  {
+    "Key": "COMMON_KILL",
+    "CN": "击杀数:{0}"
+  }
+]

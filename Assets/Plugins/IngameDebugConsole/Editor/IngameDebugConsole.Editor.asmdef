@@ -1,0 +1,19 @@
+{
+    "name": "IngameDebugConsole.Editor",
+    "references": [
+        "IngameDebugConsole.Runtime"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [
+        "JULYGF_ENABLE_LOG"
+    ],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

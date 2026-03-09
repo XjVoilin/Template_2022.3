@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c5683dc4ae63b944f9914cbd77ee67c2, type: 3}
+  m_Name: FrameworkConfig
+  m_EditorClassIdentifier: 
+  PlayMode: 0
+  EventBusConfig:
+    handlerTimeoutMs: 16
+    maxHandlersPerFrame: 50
+    enableFrameSlicing: 1
+    handlerExceptionThreshold: 3
+  TaskResetConfig:
+    expireCheckIntervalSeconds: 60
+  EnabledLogChannels: -1
+  TipConfig:
+    TipPrefabPath: UITipItem
+    PoolMaxSize: 10
+    DefaultDuration: 2
+    FadeOutDuration: 0.3
+    Spacing: 10
+    MoveUpDuration: 0.2
+    EnterOffset: 50
+    EnterDuration: 0.2
