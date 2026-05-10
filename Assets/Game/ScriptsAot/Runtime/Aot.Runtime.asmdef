@@ -1,0 +1,20 @@
+{
+    "name": "Aot.Runtime",
+    "rootNamespace": "",
+    "references": [
+        "GUID:862ecc02eddb84cf5b33c3566dbd6c68",
+        "GUID:77184192e71e20546a14610ffad60b16",
+        "GUID:f51ebe6a0ceec4240a699833d6309b23",
+        "GUID:e34a5702dd353724aa315fb8011f08c3",
+        "GUID:2a81c6962524d424a8ef5072bd3b0fa0"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

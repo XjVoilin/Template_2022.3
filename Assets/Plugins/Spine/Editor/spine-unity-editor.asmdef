@@ -1,0 +1,19 @@
+{
+    "name": "spine-unity-editor",
+    "rootNamespace": "",
+    "references": [
+        "spine-csharp",
+        "spine-unity"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

@@ -24,8 +24,8 @@ public sealed partial class UIWindow : Luban.BeanBase
         { if(!_buf["isClickBlankQuit"].IsBoolean) { throw new SerializationException(); }  IsClickBlankQuit = _buf["isClickBlankQuit"]; }
         { if(!_buf["enterAnimType"].IsNumber) { throw new SerializationException(); }  EnterAnimType = _buf["enterAnimType"]; }
         { if(!_buf["exitAnimType"].IsNumber) { throw new SerializationException(); }  ExitAnimType = _buf["exitAnimType"]; }
-        { if(!_buf["liftState"].IsNumber) { throw new SerializationException(); }  LiftState = _buf["liftState"]; }
-        { if(!_buf["destroyTime"].IsNumber) { throw new SerializationException(); }  DestroyTime = _buf["destroyTime"]; }
+        { if(!_buf["isIgnoreSafeArea"].IsBoolean) { throw new SerializationException(); }  IsIgnoreSafeArea = _buf["isIgnoreSafeArea"]; }
+        { if(!_buf["uiLayer"].IsNumber) { throw new SerializationException(); }  UiLayer = _buf["uiLayer"]; }
     }
 
     public static UIWindow DeserializeUIWindow(JSONNode _buf)
@@ -46,7 +46,7 @@ public sealed partial class UIWindow : Luban.BeanBase
     /// </summary>
     public readonly string WindowName;
     /// <summary>
-    /// 是否需要黑色遮早罩
+    /// 是否需要黑色遮罩
     /// </summary>
     public readonly bool IsNeedBlackMask;
     /// <summary>
@@ -62,13 +62,13 @@ public sealed partial class UIWindow : Luban.BeanBase
     /// </summary>
     public readonly int ExitAnimType;
     /// <summary>
-    /// 销毁条件
+    /// 是否忽略安全区域
     /// </summary>
-    public readonly int LiftState;
+    public readonly bool IsIgnoreSafeArea;
     /// <summary>
-    /// 隐藏多少时间后销毁
+    /// 层级
     /// </summary>
-    public readonly int DestroyTime;
+    public readonly int UiLayer;
    
     public const int __ID__ = 769364900;
     public override int GetTypeId() => __ID__;
@@ -87,8 +87,8 @@ public sealed partial class UIWindow : Luban.BeanBase
         + "isClickBlankQuit:" + IsClickBlankQuit + ","
         + "enterAnimType:" + EnterAnimType + ","
         + "exitAnimType:" + ExitAnimType + ","
-        + "liftState:" + LiftState + ","
-        + "destroyTime:" + DestroyTime + ","
+        + "isIgnoreSafeArea:" + IsIgnoreSafeArea + ","
+        + "uiLayer:" + UiLayer + ","
         + "}";
     }
 }

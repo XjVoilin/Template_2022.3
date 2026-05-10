@@ -145,11 +145,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1152170806}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 54bdaad036c4f4e0bbcb6568e446652a, type: 3}
+  m_Script: {fileID: 11500000, guid: 577695ec8c0446ac9108be0576802d9a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   frameworkConfig: {fileID: 11400000, guid: a76bd4741c2a544d9afdef04b1456724, type: 2}
-  remoteDataConfig: {fileID: 11400000, guid: 7030c71e59c1b4e5e9b477f17ca1c306, type: 2}
 --- !u!4 &1152170808
 Transform:
   m_ObjectHideFlags: 0

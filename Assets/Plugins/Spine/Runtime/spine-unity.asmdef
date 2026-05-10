@@ -1,0 +1,16 @@
+{
+    "name": "spine-unity",
+    "rootNamespace": "",
+    "references": [
+        "spine-csharp"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": true,
+    "overrideReferences": true,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
