@@ -45,24 +45,8 @@ MonoBehaviour:
         FilterRuleName: CollectAll
         AssetTags: 
         UserData: 
-      - CollectPath: Assets/Game/Res/Games/TicTacToe
-        CollectorGUID: fc40d4e89bf2342e4a99f5bb30ea369d
-        CollectorType: 0
-        AddressRuleName: AddressByFileName
-        PackRuleName: PackDirectory
-        FilterRuleName: CollectAll
-        AssetTags: 
-        UserData: 
-      - CollectPath: Assets/Game/Res/Sounds
-        CollectorGUID: edf49e45acf1a4c348978672f7333603
-        CollectorType: 0
-        AddressRuleName: AddressByFileName
-        PackRuleName: PackDirectory
-        FilterRuleName: CollectAll
-        AssetTags: 
-        UserData: 
       - CollectPath: Assets/Game/Res/Prefabs
-        CollectorGUID: 3844ccc025c214163bca11d61bf1c641
+        CollectorGUID: 1eff8348797124fa99c4992969d016d8
         CollectorType: 0
         AddressRuleName: AddressByFileName
         PackRuleName: PackDirectory

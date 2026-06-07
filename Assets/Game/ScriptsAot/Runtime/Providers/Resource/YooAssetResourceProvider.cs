@@ -15,36 +15,63 @@ using Object = UnityEngine.Object;
 
 namespace GameTemplate.Aot
 {
+    
+    /// <summary>
+    /// 运行时 CDN 端点地址，由 GameEntry 在 OnPreLaunch 阶段计算后注入 DI 容器。
+    /// </summary>
+    public readonly struct CDNEndpoints
+    {
+        public readonly string MainURL;
+
+        public CDNEndpoints(string mainURL)
+        {
+            MainURL = mainURL;
+        }
+
+        public static readonly CDNEndpoints Empty = new(string.Empty);
+    }
+    
+    /// <summary>
+    /// 基于 YooAsset 的 IResourceProvider 实现。
+    /// 引用计数完全委托 YooAsset：每次加载创建一个 AssetHandle，句柄释放即 Release。
+    /// </summary>
     internal class YooAssetResourceProvider : ProviderBase, IResourceProvider
     {
         private readonly EPlayMode _playMode;
+        private readonly CDNEndpoints _cdnEndpoints;
 
-        public YooAssetResourceProvider(FrameworkConfig config)
+        /// <summary>
+        /// 是否为远程模式（需要远端 CDN 配置后手动初始化）
+        /// </summary>
+        public bool IsRemoteMode => _playMode == EPlayMode.HostPlayMode || _playMode == EPlayMode.WebPlayMode;
+
+        public YooAssetResourceProvider(FrameworkConfig config, CDNEndpoints cdnEndpoints)
         {
+            _cdnEndpoints = cdnEndpoints;
 #if UNITY_EDITOR
             _playMode = config.PlayMode switch
             {
                 JPlayMode.EditorSimulateMode => EPlayMode.EditorSimulateMode,
                 JPlayMode.OfflinePlayMode => EPlayMode.OfflinePlayMode,
                 JPlayMode.HostPlayMode => EPlayMode.HostPlayMode,
+                JPlayMode.WebPlayMode => EPlayMode.WebPlayMode,
+                JPlayMode.CustomPlayMode => EPlayMode.CustomPlayMode,
                 _ => EPlayMode.EditorSimulateMode
             };
+#elif JULYGF_WX_MINIGAME || JULYGF_DY_MINIGAME
+            _playMode = EPlayMode.WebPlayMode;
 #else
             _playMode = config.PlayMode switch
             {
                 JPlayMode.HostPlayMode => EPlayMode.HostPlayMode,
+                JPlayMode.WebPlayMode => EPlayMode.WebPlayMode,
+                JPlayMode.CustomPlayMode => EPlayMode.CustomPlayMode,
                 _ => EPlayMode.OfflinePlayMode
             };
 #endif
         }
 
         private ResourcePackage _resourcePackage;
-
-        private readonly Dictionary<Object, int> _refCounts = new();
-        private readonly Dictionary<string, Object> _locationToResourceCache = new();
-        private readonly Dictionary<Object, string> _objectToLocation = new();
-        private readonly Dictionary<string, List<AssetHandle>> _locationToHandles = new();
-        private readonly Dictionary<string, AssetHandle> _preloadHandles = new();
 
         protected override LogChannel LogChannel => LogChannel.Resource;
 
@@ -61,7 +88,14 @@ namespace GameTemplate.Aot
 
                 InitializationOperation initOp;
 
-                if (_playMode == EPlayMode.EditorSimulateMode)
+                if (IsRemoteMode)
+                {
+                    if (string.IsNullOrEmpty(_cdnEndpoints.MainURL))
+                        throw new InvalidOperationException($"[{Name}] 远程模式要求 CDNEndpoints 在 OnPreLaunch 中已注入");
+
+                    initOp = InitializeRemotePackage(_cdnEndpoints.MainURL);
+                }
+                else if (_playMode == EPlayMode.EditorSimulateMode)
                 {
                     var buildResult = EditorSimulateModeHelper.SimulateBuild(packageName);
                     var packageRoot = buildResult.PackageRootDirectory;
@@ -77,15 +111,10 @@ namespace GameTemplate.Aot
                         FileSystemParameters.CreateDefaultBuildinFileSystemParameters();
                     initOp = package.InitializeAsync(createParameters);
                 }
-                else if (_playMode == EPlayMode.HostPlayMode)
+                else if (_playMode == EPlayMode.CustomPlayMode)
                 {
-                    var createParameters = new HostPlayModeParameters
-                    {
-                        BuildinFileSystemParameters = FileSystemParameters.CreateDefaultBuildinFileSystemParameters(),
-                        CacheFileSystemParameters =
-                            FileSystemParameters.CreateDefaultCacheFileSystemParameters(new RemoteServices(""))
-                    };
-                    initOp = package.InitializeAsync(createParameters);
+                    GF.LogWarning($"[{Name}] CustomPlayMode 模式需要外部设置资源包，请调用 SetResourcePackage 方法");
+                    return;
                 }
                 else
                 {
@@ -99,7 +128,10 @@ namespace GameTemplate.Aot
 
                 GF.Log($"[{Name}] YooAsset 资源包初始化成功（{_playMode}）");
 
-                await UpdateManifestAsync();
+                if (_playMode != EPlayMode.CustomPlayMode)
+                {
+                    await UpdateManifestAsync();
+                }
             }
             catch (Exception ex)
             {
@@ -108,6 +140,47 @@ namespace GameTemplate.Aot
             }
         }
 
+        private InitializationOperation InitializeRemotePackage(string mainURL)
+        {
+            IRemoteServices remoteServices = new RemoteServices(mainURL);
+
+            GF.Log($"[{Name}] 远程初始化 — Main: {mainURL}");
+
+            if (_playMode == EPlayMode.HostPlayMode)
+            {
+                var createParameters = new HostPlayModeParameters
+                {
+                    BuildinFileSystemParameters = FileSystemParameters.CreateDefaultBuildinFileSystemParameters(),
+                    CacheFileSystemParameters =
+                        FileSystemParameters.CreateDefaultCacheFileSystemParameters(remoteServices)
+                };
+                return _resourcePackage.InitializeAsync(createParameters);
+            }
+
+            // WebPlayMode
+            var webParameters = new WebPlayModeParameters();
+
+#if UNITY_WEBGL && JULYGF_WX_MINIGAME
+            var cdnUri = new System.Uri(mainURL);
+            WeChatWASM.WX.SetDataCDN($"{cdnUri.Scheme}://{cdnUri.Authority}/");
+            string packageRoot = $"{WeChatWASM.WX.env.USER_DATA_PATH}/__GAME_FILE_CACHE{cdnUri.AbsolutePath}";
+            webParameters.WebServerFileSystemParameters =
+                WechatFileSystemCreater.CreateFileSystemParameters(packageRoot, remoteServices);
+#elif UNITY_WEBGL && JULYGF_DY_MINIGAME
+        string packageRoot = "yoo";
+        webParameters.WebServerFileSystemParameters =
+            TiktokFileSystemCreater.CreateFileSystemParameters(packageRoot, remoteServices);
+#else
+            webParameters.WebServerFileSystemParameters =
+                FileSystemParameters.CreateDefaultWebServerFileSystemParameters();
+#endif
+
+            return _resourcePackage.InitializeAsync(webParameters);
+        }
+
+        /// <summary>
+        /// 请求资源版本号并更新清单。appendTimeTicks 防止 CDN 缓存。
+        /// </summary>
         public async UniTask UpdateManifestAsync()
         {
             var requestVersionOp = _resourcePackage.RequestPackageVersionAsync(appendTimeTicks: true);
@@ -128,6 +201,14 @@ namespace GameTemplate.Aot
             GF.Log($"[{Name}] 资源清单更新成功 (版本: {version})");
         }
 
+        #region 下载
+
+        /// <summary>
+        /// 按 Tag 下载资源。
+        /// </summary>
+        /// <param name="tag">资源标签（如 "lobby"、"game_101"）</param>
+        /// <param name="ct">取消令牌（用户返回大厅时可 cancel 小游戏下载）</param>
+        /// <returns>下载是否成功</returns>
         public async UniTask<bool> DownloadByTagAsync(string tag, CancellationToken ct = default)
         {
             var downloader = _resourcePackage.CreateResourceDownloader(tag, 10, 3);
@@ -137,7 +218,14 @@ namespace GameTemplate.Aot
                 return true;
             }
 
-            GF.Log($"[{Name}] [{tag}] 需要下载 {downloader.TotalDownloadCount} 个文件，共 {downloader.TotalDownloadBytes / 1048576f:F2} MB");
+            var totalBytes = downloader.TotalDownloadBytes;
+            var totalCount = downloader.TotalDownloadCount;
+            GF.Log($"[{Name}] [{tag}] 需要下载 {totalCount} 个文件，共 {totalBytes / 1048576f:F2} MB");
+
+            downloader.DownloadErrorCallback = data =>
+            {
+                GF.LogError($"[{Name}] [{tag}] 下载出错: {data.FileName}, {data.ErrorInfo}");
+            };
 
             downloader.BeginDownload();
 
@@ -149,229 +237,18 @@ namespace GameTemplate.Aot
             catch (OperationCanceledException)
             {
                 downloader.CancelDownload();
+                GF.Log($"[{Name}] [{tag}] 下载已取消");
                 return false;
             }
 
-            return downloader.Status == EOperationStatus.Succeed;
-        }
+            var success = downloader.Status == EOperationStatus.Succeed;
 
-        private void EnsurePackage()
-        {
-            if (_resourcePackage == null)
-                throw new InvalidOperationException($"[{Name}] 资源包未找到。");
+            if (success)
+                GF.Log($"[{Name}] [{tag}] 下载完成");
+            else
+                GF.LogError($"[{Name}] [{tag}] 下载失败");
 
-            if (_resourcePackage.InitializeStatus == EOperationStatus.None)
-                throw new InvalidOperationException($"[{Name}] 资源包尚未初始化。");
-        }
-
-        #region 资源加载
-
-        public async UniTask<T> LoadAsync<T>(string fileName, CancellationToken cancellationToken = default)
-            where T : Object
-        {
-            if (string.IsNullOrEmpty(fileName))
-            {
-                GF.LogWarning($"[{Name}] 资源文件名不能为空");
-                return null;
-            }
-
-            EnsurePackage();
-
-            if (TryGetCachedResource<T>(fileName, out var cachedResource))
-            {
-                IncrementRefCount(cachedResource);
-                return cachedResource;
-            }
-
-            AssetHandle handle = null;
-            if (_preloadHandles.TryGetValue(fileName, out var preloadHandle))
-            {
-                _preloadHandles.Remove(fileName);
-                handle = await WaitForPreload(fileName, preloadHandle, cancellationToken);
-            }
-
-            if (handle == null)
-            {
-                try
-                {
-                    handle = _resourcePackage.LoadAssetAsync<T>(fileName);
-                    await UniTask.WaitUntil(() => handle.IsDone, cancellationToken: cancellationToken);
-                }
-                catch (OperationCanceledException)
-                {
-                    handle?.Release();
-                    return null;
-                }
-            }
-
-            try
-            {
-                if (!handle.IsValid)
-                {
-                    GF.LogWarning($"[{Name}] 资源加载失败: {fileName}");
-                    handle.Release();
-                    return null;
-                }
-
-                var resource = handle.AssetObject as T;
-                if (resource == null)
-                {
-                    GF.LogWarning($"[{Name}] 资源类型不匹配: {fileName}");
-                    handle.Release();
-                    return null;
-                }
-
-                RecordResourceMapping(fileName, handle, resource);
-                IncrementRefCount(resource);
-                return resource;
-            }
-            catch (Exception ex)
-            {
-                handle?.Release();
-                GF.LogWarning($"[{Name}] 加载资源异常: {fileName}");
-                GF.LogException(ex);
-                return null;
-            }
-        }
-
-        public async UniTask<ResourceHandle<T>> LoadWithHandleAsync<T>(string fileName, bool captureStackTrace = false,
-            CancellationToken cancellationToken = default) where T : Object
-        {
-            var asset = await LoadAsync<T>(fileName, cancellationToken);
-            if (asset == null) return null;
-            return new ResourceHandle<T>(asset, fileName, this, captureStackTrace);
-        }
-
-        public async UniTask<List<T>> LoadBatchAsync<T>(IEnumerable<string> fileNames,
-            CancellationToken cancellationToken = default) where T : Object
-        {
-            var results = new List<T>();
-            foreach (var fileName in fileNames)
-            {
-                if (cancellationToken.IsCancellationRequested)
-                    break;
-                var resource = await LoadAsync<T>(fileName, cancellationToken);
-                results.Add(resource);
-            }
-
-            return results;
-        }
-
-        public async UniTask<bool> PreloadAsync<T>(string fileName, CancellationToken cancellationToken = default)
-            where T : Object
-        {
-            if (string.IsNullOrEmpty(fileName))
-                return false;
-
-            EnsurePackage();
-
-            if (_preloadHandles.ContainsKey(fileName) || _locationToResourceCache.ContainsKey(fileName))
-                return true;
-
-            try
-            {
-                var handle = _resourcePackage.LoadAssetAsync<T>(fileName);
-                await UniTask.WaitUntil(() => handle.IsDone, cancellationToken: cancellationToken);
-
-                if (handle.IsValid)
-                {
-                    _preloadHandles[fileName] = handle;
-                    return true;
-                }
-
-                handle.Release();
-                return false;
-            }
-            catch (OperationCanceledException)
-            {
-                return false;
-            }
-            catch (Exception ex)
-            {
-                GF.LogWarning($"[{Name}] 预加载资源异常: {fileName}");
-                GF.LogException(ex);
-                return false;
-            }
-        }
-
-        public async UniTask<T> LoadSubAssetAsync<T>(string fileName, string assetName,
-            CancellationToken cancellationToken = default) where T : Object
-        {
-            if (string.IsNullOrEmpty(fileName) || string.IsNullOrEmpty(assetName))
-                return null;
-
-            EnsurePackage();
-
-            SubAssetsHandle handle = null;
-            try
-            {
-                handle = _resourcePackage.LoadSubAssetsAsync<T>(fileName);
-                await UniTask.WaitUntil(() => handle.IsDone, cancellationToken: cancellationToken);
-
-                if (!handle.IsValid)
-                {
-                    handle.Release();
-                    return null;
-                }
-
-                var targetAsset = handle.GetSubAssetObject<T>(assetName);
-                handle.Release();
-                return targetAsset;
-            }
-            catch (OperationCanceledException)
-            {
-                handle?.Release();
-                return null;
-            }
-            catch (Exception ex)
-            {
-                handle?.Release();
-                GF.LogException(ex);
-                return null;
-            }
-        }
-
-        public async UniTask<List<T>> LoadAllSubAssetsAsync<T>(string fileName,
-            CancellationToken cancellationToken = default) where T : Object
-        {
-            if (string.IsNullOrEmpty(fileName))
-                return new List<T>();
-
-            EnsurePackage();
-
-            AllAssetsHandle handle = null;
-            try
-            {
-                handle = _resourcePackage.LoadAllAssetsAsync<T>(fileName);
-                await UniTask.WaitUntil(() => handle.IsDone, cancellationToken: cancellationToken);
-
-                if (!handle.IsValid)
-                {
-                    handle.Release();
-                    return new List<T>();
-                }
-
-                var results = new List<T>();
-                foreach (var asset in handle.AllAssetObjects)
-                {
-                    if (asset is T t)
-                        results.Add(t);
-                }
-
-                handle.Release();
-                return results;
-            }
-            catch (OperationCanceledException)
-            {
-                handle?.Release();
-                return new List<T>();
-            }
-            catch (Exception ex)
-            {
-                handle?.Release();
-                GF.LogException(ex);
-                return new List<T>();
-            }
+            return success;
         }
 
         /// <summary>
@@ -394,58 +271,92 @@ namespace GameTemplate.Aot
             return false;
         }
 
+        #endregion
+
+        public async UniTask UnloadUnusedAssetsAsync()
+        {
+            EnsurePackage();
+            var operation = _resourcePackage.UnloadUnusedAssetsAsync();
+            await UniTask.WaitUntil(() => operation.IsDone);
+        }
+
+        private void EnsurePackage()
+        {
+            if (_resourcePackage == null)
+            {
+                throw new InvalidOperationException(
+                    $"[{Name}] 资源包未找到。请确保已创建并初始化 YooAsset 资源包，或调用 SetResourcePackage 方法设置资源包。");
+            }
+
+            if (_resourcePackage.InitializeStatus == EOperationStatus.None)
+            {
+                throw new InvalidOperationException($"[{Name}] 资源包尚未初始化。");
+            }
+        }
+
+        #region 资源加载
+
+        public async UniTask<ResourceHandle<T>> LoadAssetAsync<T>(string fileName,
+            CancellationToken cancellationToken = default) where T : Object
+        {
+            if (string.IsNullOrEmpty(fileName))
+            {
+                GF.LogWarning($"[{Name}] 资源文件名不能为空");
+                return null;
+            }
+
+            EnsurePackage();
+
+            AssetHandle handle = null;
+            try
+            {
+                handle = _resourcePackage.LoadAssetAsync<T>(fileName);
+                await UniTask.WaitUntil(() => handle.IsDone, cancellationToken: cancellationToken);
+            }
+            catch (OperationCanceledException)
+            {
+                handle?.Release();
+                GF.LogWarning($"[{Name}] 资源加载已取消: {fileName}");
+                return null;
+            }
+            catch (Exception ex)
+            {
+                handle?.Release();
+                GF.LogWarning($"[{Name}] 加载资源异常: {fileName}");
+                GF.LogException(ex);
+                return null;
+            }
+
+            if (!handle.IsValid)
+            {
+                GF.LogWarning($"[{Name}] 资源加载失败: {fileName}");
+                handle.Release();
+                return null;
+            }
+
+            var resource = handle.AssetObject as T;
+            if (resource == null)
+            {
+                GF.LogWarning($"[{Name}] 资源类型不匹配: {fileName}");
+                handle.Release();
+                return null;
+            }
+
+            var captured = handle;
+            return new ResourceHandle<T>(resource, () => captured.Release());
+        }
+
         public bool HasAsset(string fileName)
         {
             if (string.IsNullOrEmpty(fileName))
+            {
                 return false;
+            }
 
             EnsurePackage();
+
             var info = _resourcePackage.GetAssetInfo(fileName);
             return info != null;
-        }
-
-        #endregion
-
-        #region 资源卸载
-
-        public void Unload(Object obj)
-        {
-            if (obj == null) return;
-
-            if (!_objectToLocation.TryGetValue(obj, out var location))
-                return;
-
-            if (DecrementRefCount(obj))
-            {
-                ReleaseResourceHandles(location);
-                CleanupResourceMappings(location, obj);
-            }
-        }
-
-        public void UnloadAll()
-        {
-            foreach (var kvp in _locationToHandles)
-            {
-                foreach (var handle in kvp.Value)
-                {
-                    if (handle != null && handle.IsValid)
-                        handle.Release();
-                }
-            }
-
-            foreach (var kvp in _preloadHandles)
-            {
-                if (kvp.Value != null && kvp.Value.IsValid)
-                    kvp.Value.Release();
-            }
-
-            _locationToHandles.Clear();
-            _objectToLocation.Clear();
-            _locationToResourceCache.Clear();
-            _refCounts.Clear();
-            _preloadHandles.Clear();
-
-            Resources.UnloadUnusedAssets();
         }
 
         #endregion
@@ -460,13 +371,18 @@ namespace GameTemplate.Aot
             CancellationToken cancellationToken = default)
         {
             if (string.IsNullOrEmpty(sceneName))
+            {
                 throw new ArgumentException("场景名称不能为空", nameof(sceneName));
+            }
 
             EnsurePackage();
 
             var existingScene = SceneManager.GetSceneByName(sceneName);
             if (existingScene.IsValid() && existingScene.isLoaded)
+            {
+                GF.LogWarning($"[{Name}] 场景 {sceneName} 已加载，直接返回");
                 return existingScene;
+            }
 
             SceneHandle sceneHandle = null;
             try
@@ -475,14 +391,25 @@ namespace GameTemplate.Aot
                 await UniTask.WaitUntil(() => sceneHandle.IsDone, cancellationToken: cancellationToken);
 
                 if (!sceneHandle.IsValid)
-                    throw new InvalidOperationException($"[{Name}] 场景 {sceneName} 加载失败");
+                {
+                    throw new JulyException($"[{Name}] 场景 {sceneName} 加载失败");
+                }
 
                 _sceneHandles[sceneName] = sceneHandle;
+                GF.Log($"[{Name}] 场景 {sceneName} 加载完成");
                 return sceneHandle.SceneObject;
+
             }
             catch (OperationCanceledException)
             {
                 sceneHandle?.Release();
+                throw;
+            }
+            catch (Exception ex)
+            {
+                sceneHandle?.Release();
+                GF.LogWarning($"[{Name}] 场景 {sceneName} 加载异常");
+                GF.LogException(ex);
                 throw;
             }
         }
@@ -490,19 +417,29 @@ namespace GameTemplate.Aot
         public async UniTask<bool> UnloadSceneAsync(string sceneName, CancellationToken cancellationToken = default)
         {
             if (string.IsNullOrEmpty(sceneName))
+            {
                 throw new ArgumentException("场景名称不能为空", nameof(sceneName));
+            }
 
             if (!_sceneHandles.Remove(sceneName, out var sceneHandle))
             {
+                GF.LogWarning($"[{Name}] 场景 {sceneName} 未通过 YooAsset 加载，尝试使用 SceneManager 卸载");
+
                 var scene = SceneManager.GetSceneByName(sceneName);
                 if (!scene.IsValid() || !scene.isLoaded)
+                {
+                    GF.LogWarning($"[{Name}] 场景 {sceneName} 未加载，无需卸载");
                     return false;
+                }
 
                 var asyncOp = SceneManager.UnloadSceneAsync(scene);
                 if (asyncOp == null)
+                {
                     return false;
+                }
 
                 await UniTask.WaitUntil(() => asyncOp.isDone, cancellationToken: cancellationToken);
+                GF.Log($"[{Name}] 场景 {sceneName} 卸载完成（SceneManager）");
                 return true;
             }
 
@@ -511,6 +448,7 @@ namespace GameTemplate.Aot
                 var unloadOp = sceneHandle.UnloadAsync();
                 await UniTask.WaitUntil(() => unloadOp.IsDone, cancellationToken: cancellationToken);
                 sceneHandle.Release();
+                GF.Log($"[{Name}] 场景 {sceneName} 卸载完成");
                 return true;
             }
 
@@ -524,111 +462,14 @@ namespace GameTemplate.Aot
             foreach (var kvp in _sceneHandles)
             {
                 if (kvp.Value != null && kvp.Value.IsValid)
+                {
                     kvp.Value.Release();
+                }
             }
 
             _sceneHandles.Clear();
-            UnloadAll();
+            GF.Log($"[{Name}] YooAsset资源提供者已关闭");
         }
-
-        #region Private Methods
-
-        private async UniTask<AssetHandle> WaitForPreload(string fileName, AssetHandle preloadHandle,
-            CancellationToken cancellationToken)
-        {
-            if (!preloadHandle.IsDone)
-            {
-                try
-                {
-                    await UniTask.WaitUntil(() => preloadHandle.IsDone, cancellationToken: cancellationToken);
-                }
-                catch (OperationCanceledException)
-                {
-                    _preloadHandles[fileName] = preloadHandle;
-                    return null;
-                }
-            }
-
-            if (preloadHandle.IsValid)
-                return preloadHandle;
-
-            preloadHandle.Release();
-            return null;
-        }
-
-        private bool TryGetCachedResource<T>(string location, out T resource) where T : Object
-        {
-            resource = null;
-            if (_locationToResourceCache.TryGetValue(location, out var cachedObj))
-            {
-                if (cachedObj == null)
-                {
-                    _locationToResourceCache.Remove(location);
-                    return false;
-                }
-
-                if (cachedObj is T t)
-                {
-                    resource = t;
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
-        private void IncrementRefCount(Object obj)
-        {
-            _refCounts[obj] = _refCounts.TryGetValue(obj, out var count) ? count + 1 : 1;
-        }
-
-        private bool DecrementRefCount(Object obj)
-        {
-            if (!_refCounts.TryGetValue(obj, out var count))
-                return false;
-
-            if (count <= 1)
-            {
-                _refCounts.Remove(obj);
-                return true;
-            }
-
-            _refCounts[obj] = count - 1;
-            return false;
-        }
-
-        private void ReleaseResourceHandles(string location)
-        {
-            if (!_locationToHandles.Remove(location, out var handles))
-                return;
-
-            foreach (var handle in handles)
-            {
-                if (handle != null && handle.IsValid)
-                    handle.Release();
-            }
-        }
-
-        private void CleanupResourceMappings(string location, Object obj)
-        {
-            _locationToResourceCache.Remove(location);
-            _objectToLocation.Remove(obj);
-        }
-
-        private void RecordResourceMapping(string location, AssetHandle handle, Object resource)
-        {
-            if (!_locationToHandles.TryGetValue(location, out var handles))
-            {
-                handles = new List<AssetHandle>(1);
-                _locationToHandles[location] = handles;
-            }
-
-            handles.Add(handle);
-            _objectToLocation[resource] = location;
-            _locationToResourceCache[location] = resource;
-        }
-
-        #endregion
 
         private class RemoteServices : IRemoteServices
         {

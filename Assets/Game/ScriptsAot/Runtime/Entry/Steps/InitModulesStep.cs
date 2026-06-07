@@ -13,7 +13,7 @@ namespace GameTemplate.Aot
             await ctx.InitProvidersAsync();
             await ctx.InitModulesAsync();
 
-            var gameContext = ctx.Registry.Resolve<GameContext>();
+            var gameContext = ctx.Registry.Resolve<ArchContext>();
             await gameContext.InitializeAsync(ctx.Token);
 
             return true;

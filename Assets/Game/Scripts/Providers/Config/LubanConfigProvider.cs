@@ -60,13 +60,11 @@ namespace GameTemplate
 
         private async UniTask<(string name, string json)> LoadSingleJsonAsync(string name)
         {
-            var textAsset = await _resourceProvider.LoadAsync<TextAsset>(name);
-            if (textAsset == null)
+            using var handle = await _resourceProvider.LoadAssetAsync<TextAsset>(name);
+            if (handle?.Asset == null)
                 throw new JulyException($"配置文件未找到: {name}");
 
-            var json = textAsset.text;
-            _resourceProvider.Unload(textAsset);
-            return (name, json);
+            return (name, handle.Asset.text);
         }
 
         public bool TryGetTable<T>(out T table) where T : class

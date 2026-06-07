@@ -1,6 +1,6 @@
-using JulyArch;
 using JulyCore.Core;
 using JulyCore.Core.Launch;
+using JulyGame;
 using UnityEngine;
 
 namespace GameTemplate.Aot
@@ -26,12 +26,12 @@ namespace GameTemplate.Aot
         {
             base.Update();
             if (!IsInitialized) return;
-            AppArch.Context?.Update(Time.deltaTime);
+            GameArch.Context?.Update(Time.deltaTime);
         }
 
         protected override void OnDestroy()
         {
-            AppArch.Context?.Shutdown();
+            GameArch.Context?.Shutdown();
             base.OnDestroy();
         }
     }

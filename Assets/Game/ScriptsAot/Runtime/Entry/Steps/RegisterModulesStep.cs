@@ -10,6 +10,7 @@ using JulyCore.Module.Resource;
 using JulyCore.Module.Save;
 using JulyCore.Module.Scene;
 using JulyCore.Module.UI;
+using JulyGame;
 
 namespace GameTemplate.Aot
 {
@@ -27,14 +28,13 @@ namespace GameTemplate.Aot
             ctx.RegisterModule<SaveModule>();
             ctx.RegisterModule<ConfigModule>();
 
-            var gameContext = new GameContext();
-            AppArch.Context = gameContext;
+            GameArch.Create();
+            ctx.Registry.Register(GameArch.Context);
 
             var registrar = FindRegistrar();
             if (registrar != null)
-                registrar.Register(gameContext);
+                registrar.Register();
 
-            ctx.Registry.Register(gameContext);
             if (registrar != null)
                 ctx.Registry.Register(registrar);
 

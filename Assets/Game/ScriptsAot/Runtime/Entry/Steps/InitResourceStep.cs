@@ -19,7 +19,7 @@ namespace GameTemplate.Aot
             {
                 if (!_providerRegistered)
                 {
-                    var resourceProvider = new YooAssetResourceProvider(ctx.Config);
+                    var resourceProvider = new YooAssetResourceProvider(ctx.Config,new CDNEndpoints());
                     ctx.RegisterProvider<IResourceProvider>(resourceProvider);
                     _providerRegistered = true;
                 }

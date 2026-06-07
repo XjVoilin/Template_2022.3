@@ -46,7 +46,7 @@ public sealed partial class UIWindow : Luban.BeanBase
     /// </summary>
     public readonly string WindowName;
     /// <summary>
-    /// 是否需要黑色遮罩
+    /// 是否需要黑色遮早罩
     /// </summary>
     public readonly bool IsNeedBlackMask;
     /// <summary>

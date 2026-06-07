@@ -6,12 +6,12 @@ namespace cfg
 {
     public partial class Tables
     {
-        public static readonly string[] TableNames = { "tblanguage", "tbuiwindow" };
+        public static readonly string[] TableNames = { "tbuiwindow", "tblanguage" };
 
         public void RegisterTo(Dictionary<Type, object> registry)
         {
-            registry[typeof(TbLanguage)] = TbLanguage;
             registry[typeof(TbUIWindow)] = TbUIWindow;
+            registry[typeof(TbLanguage)] = TbLanguage;
         }
     }
 }

@@ -15,28 +15,50 @@
       "hash": "d870def77ce13ea942786a6f9e6e55112b46c331"
     },
     "com.july.arch": {
-      "version": "https://github.com/XjVoilin/JulyArch.git#v1.0.21",
-      "depth": 0,
-      "source": "git",
-      "dependencies": {},
-      "hash": "952e36ddfaf8a0acb675c8cc49f4fba081d0af93"
-    },
-    "com.july.core": {
-      "version": "https://github.com/XjVoilin/JulyCore.git#v1.0.68",
-      "depth": 0,
-      "source": "git",
-      "dependencies": {},
-      "hash": "948c0426a121476bb29f13b78aa8a8771333daa8"
-    },
-    "com.july.toolkit": {
-      "version": "https://github.com/XjVoilin/JulyToolkit.git#v1.0.7",
+      "version": "https://github.com/XjVoilin/JulyArch.git#v1.0.26",
       "depth": 0,
       "source": "git",
       "dependencies": {
-        "com.july.core": "1.0.55",
-        "com.july.arch": "1.0.17"
+        "com.july.events": "1.0.0"
       },
-      "hash": "43b1772845da47a36055286e741714936eafd13f"
+      "hash": "017c7b09dccb3298fd8a21e861bce63351779661"
+    },
+    "com.july.core": {
+      "version": "https://github.com/XjVoilin/JulyCore.git#v1.0.79",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {
+        "com.july.events": "1.0.0"
+      },
+      "hash": "8a54bd06e57e47c03f08a4ced2351832d62d9ef6"
+    },
+    "com.july.events": {
+      "version": "https://github.com/XjVoilin/JulyEvents.git#v1.0.0",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "3d3f19944dd5b2bc92ea495777c50d2cd6fe63f9"
+    },
+    "com.july.game": {
+      "version": "https://github.com/XjVoilin/JulyGame.git#v1.0.2",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {
+        "com.july.arch": "1.0.24",
+        "com.july.core": "1.0.73",
+        "com.july.events": "1.0.0"
+      },
+      "hash": "5e562d9a1d50a86aa931fe0928d5807665f3dc88"
+    },
+    "com.july.toolkit": {
+      "version": "https://github.com/XjVoilin/JulyToolkit.git#v1.0.17",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {
+        "com.july.core": "1.0.73",
+        "com.july.events": "1.0.0"
+      },
+      "hash": "644083fa6ef09354dca3ff14bfd05fd3ba3507a2"
     },
     "com.tuyoogame.yooasset": {
       "version": "file:com.tuyoogame.yooasset@2.3.12",

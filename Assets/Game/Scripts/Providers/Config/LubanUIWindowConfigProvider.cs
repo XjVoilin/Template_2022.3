@@ -8,7 +8,7 @@ namespace GameTemplate
     {
         public UIOpenOptions GetUIOpenOptions(int uiWindowID)
         {
-            var row = GF.Config.GetTable<TbUIWindow>().Get(uiWindowID);
+            var row = GF.Config.GetTable<TbUIWindow>().GetOrDefault(uiWindowID);
             if (row == null)
             {
                 GF.LogWarning($"[GF.UI] TbUIWindow 不存在配置: {uiWindowID}");

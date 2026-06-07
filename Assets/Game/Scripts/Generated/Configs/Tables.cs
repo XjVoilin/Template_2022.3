@@ -14,20 +14,20 @@ namespace cfg
 {
 public partial class Tables
 {
-    public TbLanguage TbLanguage {get; }
     public TbUIWindow TbUIWindow {get; }
+    public TbLanguage TbLanguage {get; }
 
     public Tables(System.Func<string, JSONNode> loader)
     {
-        TbLanguage = new TbLanguage(loader("tblanguage"));
         TbUIWindow = new TbUIWindow(loader("tbuiwindow"));
+        TbLanguage = new TbLanguage(loader("tblanguage"));
         ResolveRef();
     }
     
     private void ResolveRef()
     {
-        TbLanguage.ResolveRef(this);
         TbUIWindow.ResolveRef(this);
+        TbLanguage.ResolveRef(this);
     }
 }
 

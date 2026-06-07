@@ -1,43 +1,34 @@
 using Cysharp.Threading.Tasks;
-using GameTemplate.Aot;
 using JulyArch;
 using JulyCore;
 using JulyCore.Provider.Config;
 using JulyCore.Provider.Localization;
 using JulyCore.Provider.Resource;
-using JulyCore.Provider.Save;
 using JulyCore.Provider.UI;
 using JulyCore.Provider.Audio;
 using JulyCore.Provider.Pool;
-using JulyCore.Data.UI;
+using JulyGame;
 #if JULYGF_DEBUG
 using JulyCore.Provider.GM;
 #endif
 
 namespace GameTemplate
 {
-    /// <summary>
-    /// 热更程序集注册入口。
-    /// 框架在加载热更 DLL 后通过反射发现此类并调用，所有业务类型注册集中在此完成。
-    /// </summary>
-    public class HotUpdateRegistrar : IHotUpdateRegistrar, IAppArch
+    public class HotUpdateRegistrar : IHotUpdateRegistrar, IArchNode
     {
-        public IGameContext GetArchitecture() => AppArch.Context;
+        public IArchContext GetArchitecture() => GameArch.Context;
 
-        public void Register(GameContext ctx)
+        public void Register()
         {
             RegisterProviders();
-            RegisterStores(ctx);
-            RegisterSystems(ctx);
+            RegisterStores();
+            RegisterSystems();
         }
 
         private void RegisterProviders()
         {
             var resourceProvider = GF.Resolve<IResourceProvider>();
             var poolProvider = GF.Resolve<IPoolProvider>();
-
-            var saveProvider = new PlayerPrefsSaveProvider();
-            GF.RegisterProvider<ISaveProvider>(saveProvider);
 
             var configProvider = new LubanConfigProvider(resourceProvider);
             GF.RegisterProvider<IConfigProvider>(configProvider);
@@ -54,26 +45,21 @@ namespace GameTemplate
 #if JULYGF_DEBUG
         private static void RegisterGMCommands()
         {
-            // GF.GM.Register(typeof(YourGMClass));
         }
 #endif
 
-        private void RegisterStores(GameContext ctx)
+        private void RegisterStores()
         {
-            // ctx.RegisterStore(new YourStore());
         }
 
-        private void RegisterSystems(GameContext ctx)
+        private void RegisterSystems()
         {
-            // ctx.RegisterSystem(new YourSystem());
         }
 
         public async UniTask OnGameLaunch()
         {
             ConfigureUI();
-
-            // TODO: 在此添加游戏启动后的初始化逻辑
-            await UniTask.CompletedTask;
+            await GF.Scene.SwitchAsync("Main");
         }
 
         private static void ConfigureUI()
