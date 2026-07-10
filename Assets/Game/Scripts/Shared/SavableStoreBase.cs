@@ -1,28 +1,27 @@
 using Cysharp.Threading.Tasks;
 using JulyArch;
-using JulyCore;
-using JulyCore.Data.Save;
+using JulyGame;
 
-namespace GooseMarket
+namespace GameTemplate
 {
-    public abstract class SavableStoreBase<TData> : StoreBase<TData>, IAsyncLoadable
+    public abstract class SavableStoreBase<TData> : StoreBase<TData>
         where TData : class, ISaveData, new()
     {
         protected abstract string SaveKey { get; }
+        private ISaveSystem _saveSystem;
 
-        async UniTask IAsyncLoadable.OnLoadAsync()
+        protected override async UniTask OnInitializeAsync()
         {
-            Data = await GF.Save.LoadAndRegisterAsync<TData>(SaveKey);
+            _saveSystem = ArchContext.Current.GetSystem<ISaveSystem>();
+            Data = await _saveSystem.LoadAndRegisterAsync<TData>(SaveKey);
         }
 
-        protected void MarkDirty()
-        {
-            GF.Save.MarkDirty(SaveKey);
-        }
+        protected void MarkDirty() => _saveSystem?.MarkDirty(SaveKey);
 
         protected override void OnShutdown()
         {
-            GF.Save.Unregister(SaveKey);
+            _saveSystem?.Unregister(SaveKey);
+            _saveSystem = null;
         }
     }
 }

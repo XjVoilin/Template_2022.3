@@ -14,51 +14,73 @@
       "dependencies": {},
       "hash": "d870def77ce13ea942786a6f9e6e55112b46c331"
     },
+    "com.cysharp.unitask": {
+      "version": "file:com.cysharp.unitask",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {}
+    },
+    "com.demigiant.dotween": {
+      "version": "file:DOTween",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {}
+    },
     "com.july.arch": {
-      "version": "https://github.com/XjVoilin/JulyArch.git#v1.0.26",
+      "version": "https://github.com/XjVoilin/JulyArch.git#v1.0.34",
       "depth": 0,
       "source": "git",
       "dependencies": {
-        "com.july.events": "1.0.0"
+        "com.july.events": "1.0.0",
+        "com.july.common": "1.0.0"
       },
-      "hash": "017c7b09dccb3298fd8a21e861bce63351779661"
+      "hash": "3ae9b655e2875058f2b84be4d7df83d8c8cf2ecc"
     },
-    "com.july.core": {
-      "version": "https://github.com/XjVoilin/JulyCore.git#v1.0.79",
+    "com.july.boot": {
+      "version": "https://github.com/XjVoilin/JulyBoot.git#v1.0.3",
       "depth": 0,
       "source": "git",
       "dependencies": {
-        "com.july.events": "1.0.0"
+        "com.july.common": "1.0.0"
       },
-      "hash": "8a54bd06e57e47c03f08a4ced2351832d62d9ef6"
+      "hash": "5fea11240c8dc377bab269fb3fe15931faf3143e"
     },
-    "com.july.events": {
-      "version": "https://github.com/XjVoilin/JulyEvents.git#v1.0.0",
+    "com.july.common": {
+      "version": "https://github.com/XjVoilin/JulyCommon.git#v1.0.2",
       "depth": 0,
       "source": "git",
       "dependencies": {},
-      "hash": "3d3f19944dd5b2bc92ea495777c50d2cd6fe63f9"
+      "hash": "8f7280a5bfdbbf41ed845881b17a019e31adf1d6"
+    },
+    "com.july.events": {
+      "version": "https://github.com/XjVoilin/JulyEvents.git#v1.0.4",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "475909203eb9c1a3aae91b62da9fcced36f4b8da"
     },
     "com.july.game": {
-      "version": "https://github.com/XjVoilin/JulyGame.git#v1.0.2",
+      "version": "https://github.com/XjVoilin/JulyGame.git#v1.0.21",
       "depth": 0,
       "source": "git",
       "dependencies": {
+        "com.july.common": "1.0.0",
         "com.july.arch": "1.0.24",
-        "com.july.core": "1.0.73",
         "com.july.events": "1.0.0"
       },
-      "hash": "5e562d9a1d50a86aa931fe0928d5807665f3dc88"
+      "hash": "b6415f6f06c9bf11fd87a11213ba368e72230f29"
     },
     "com.july.toolkit": {
-      "version": "https://github.com/XjVoilin/JulyToolkit.git#v1.0.17",
+      "version": "https://github.com/XjVoilin/JulyToolkit.git#v1.0.29",
       "depth": 0,
       "source": "git",
       "dependencies": {
-        "com.july.core": "1.0.73",
+        "com.july.common": "1.0.0",
+        "com.july.arch": "1.0.24",
+        "com.july.game": "1.0.7",
         "com.july.events": "1.0.0"
       },
-      "hash": "644083fa6ef09354dca3ff14bfd05fd3ba3507a2"
+      "hash": "42fe188ec0b608e1253268b1894254df422eaa54"
     },
     "com.tuyoogame.yooasset": {
       "version": "file:com.tuyoogame.yooasset@2.3.12",
@@ -82,7 +104,7 @@
         "com.unity.modules.animation": "1.0.0",
         "com.unity.modules.uielements": "1.0.0"
       },
-      "url": "https://packages.unity.cn"
+      "url": "https://packages.unity.com"
     },
     "com.unity.2d.aseprite": {
       "version": "1.1.9",
@@ -94,7 +116,7 @@
         "com.unity.mathematics": "1.2.6",
         "com.unity.modules.animation": "1.0.0"
       },
-      "url": "https://packages.unity.cn"
+      "url": "https://packages.unity.com"
     },
     "com.unity.2d.common": {
       "version": "8.1.0",
@@ -107,7 +129,7 @@
         "com.unity.modules.animation": "1.0.0",
         "com.unity.modules.uielements": "1.0.0"
       },
-      "url": "https://packages.unity.cn"
+      "url": "https://packages.unity.com"
     },
     "com.unity.2d.pixel-perfect": {
       "version": "5.1.0",
@@ -116,7 +138,7 @@
       "dependencies": {
         "com.unity.modules.imgui": "1.0.0"
       },
-      "url": "https://packages.unity.cn"
+      "url": "https://packages.unity.com"
     },
     "com.unity.2d.psdimporter": {
       "version": "8.1.0",
@@ -127,7 +149,7 @@
         "com.unity.2d.sprite": "1.0.0",
         "com.unity.2d.animation": "9.2.0"
       },
-      "url": "https://packages.unity.cn"
+      "url": "https://packages.unity.com"
     },
     "com.unity.2d.sprite": {
       "version": "1.0.0",
@@ -144,7 +166,7 @@
         "com.unity.mathematics": "1.1.0",
         "com.unity.modules.physics2d": "1.0.0"
       },
-      "url": "https://packages.unity.cn"
+      "url": "https://packages.unity.com"
     },
     "com.unity.2d.tilemap": {
       "version": "1.0.0",
@@ -165,7 +187,7 @@
         "com.unity.modules.tilemap": "1.0.0",
         "com.unity.modules.jsonserialize": "1.0.0"
       },
-      "url": "https://packages.unity.cn"
+      "url": "https://packages.unity.com"
     },
     "com.unity.burst": {
       "version": "1.8.21",
@@ -175,14 +197,14 @@
         "com.unity.mathematics": "1.2.1",
         "com.unity.modules.jsonserialize": "1.0.0"
       },
-      "url": "https://packages.unity.cn"
+      "url": "https://packages.unity.com"
     },
     "com.unity.collab-proxy": {
       "version": "2.11.4",
       "depth": 0,
       "source": "registry",
       "dependencies": {},
-      "url": "https://packages.unity.cn"
+      "url": "https://packages.unity.com"
     },
     "com.unity.collections": {
       "version": "1.2.4",
@@ -192,14 +214,14 @@
         "com.unity.burst": "1.6.6",
         "com.unity.test-framework": "1.1.31"
       },
-      "url": "https://packages.unity.cn"
+      "url": "https://packages.unity.com"
     },
     "com.unity.ext.nunit": {
       "version": "2.0.3",
       "depth": 1,
       "source": "registry",
       "dependencies": {},
-      "url": "https://packages.unity.cn"
+      "url": "https://packages.unity.com"
     },
     "com.unity.feature.2d": {
       "version": "2.0.1",
@@ -223,7 +245,7 @@
       "dependencies": {
         "com.unity.ext.nunit": "1.0.6"
       },
-      "url": "https://packages.unity.cn"
+      "url": "https://packages.unity.com"
     },
     "com.unity.ide.visualstudio": {
       "version": "2.0.22",
@@ -232,14 +254,14 @@
       "dependencies": {
         "com.unity.test-framework": "1.1.9"
       },
-      "url": "https://packages.unity.cn"
+      "url": "https://packages.unity.com"
     },
     "com.unity.mathematics": {
       "version": "1.2.6",
       "depth": 1,
       "source": "registry",
       "dependencies": {},
-      "url": "https://packages.unity.cn"
+      "url": "https://packages.unity.com"
     },
     "com.unity.render-pipelines.core": {
       "version": "14.0.12",
@@ -277,14 +299,14 @@
       "depth": 1,
       "source": "registry",
       "dependencies": {},
-      "url": "https://packages.unity.cn"
+      "url": "https://packages.unity.com"
     },
     "com.unity.searcher": {
       "version": "4.9.2",
       "depth": 2,
       "source": "registry",
       "dependencies": {},
-      "url": "https://packages.unity.cn"
+      "url": "https://packages.unity.com"
     },
     "com.unity.shadergraph": {
       "version": "14.0.12",
@@ -304,7 +326,7 @@
         "com.unity.modules.imgui": "1.0.0",
         "com.unity.modules.jsonserialize": "1.0.0"
       },
-      "url": "https://packages.unity.cn"
+      "url": "https://packages.unity.com"
     },
     "com.unity.textmeshpro": {
       "version": "3.0.9",
@@ -313,19 +335,19 @@
       "dependencies": {
         "com.unity.ugui": "1.0.0"
       },
-      "url": "https://packages.unity.cn"
+      "url": "https://packages.unity.com"
     },
     "com.unity.timeline": {
       "version": "1.8.6",
       "depth": 0,
       "source": "registry",
       "dependencies": {
+        "com.unity.modules.audio": "1.0.0",
         "com.unity.modules.director": "1.0.0",
         "com.unity.modules.animation": "1.0.0",
-        "com.unity.modules.audio": "1.0.0",
         "com.unity.modules.particlesystem": "1.0.0"
       },
-      "url": "https://packages.unity.cn"
+      "url": "https://packages.unity.com"
     },
     "com.unity.ugui": {
       "version": "2.0.0",
@@ -344,7 +366,7 @@
         "com.unity.ugui": "1.0.0",
         "com.unity.modules.jsonserialize": "1.0.0"
       },
-      "url": "https://packages.unity.cn"
+      "url": "https://packages.unity.com"
     },
     "com.unity.modules.ai": {
       "version": "1.0.0",

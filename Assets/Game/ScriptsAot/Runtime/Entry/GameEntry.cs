@@ -1,5 +1,6 @@
-using JulyCore.Core;
-using JulyCore.Core.Launch;
+using JulyArch;
+using JulyBoot;
+using JulyCommon;
 using JulyGame;
 using UnityEngine;
 
@@ -7,32 +8,48 @@ namespace GameTemplate.Aot
 {
     public class GameEntry : JulyGameEntry
     {
+        [SerializeField] private BootConfig _bootConfig = new();
+        [SerializeField] private GameConfig _gameConfig;
+
+        private GameConfig _runtimeGameConfig;
+
         protected override void ConfigurePipeline(LaunchPipeline pipeline)
         {
+            var gameConfig = _gameConfig;
+            if (gameConfig == null)
+            {
+                _runtimeGameConfig = ScriptableObject.CreateInstance<GameConfig>();
+                gameConfig = _runtimeGameConfig;
+                JLogger.LogWarning("[GameEntry] GameConfig is not assigned; using runtime defaults");
+            }
+
+            JulyDI.Register(gameConfig);
+
 #if !JULYGF_DEBUG
             Application.SetStackTraceLogType(LogType.Log, StackTraceLogType.None);
             Application.SetStackTraceLogType(LogType.Warning, StackTraceLogType.None);
 #endif
 
-            pipeline.Add(new RegisterInfrastructureStep());
-            pipeline.Add(new InitInfrastructureStep());
+            pipeline.Add(new BootArchStep(_bootConfig));
             pipeline.Add(new InitResourceStep());
-            pipeline.Add(new RegisterModulesStep());
-            pipeline.Add(new InitModulesStep());
+            pipeline.Add(new RegisterAppSystemsStep());
+            pipeline.Add(new InitAppSystemsStep());
             pipeline.Add(new LaunchGameStep());
         }
 
-        protected override void Update()
+        private void Update()
         {
-            base.Update();
             if (!IsInitialized) return;
-            GameArch.Context?.Update(Time.deltaTime);
+            ArchContext.Current?.Update(Time.deltaTime);
         }
 
         protected override void OnDestroy()
         {
-            GameArch.Context?.Shutdown();
+            ArchContext.Current?.Shutdown();
             base.OnDestroy();
+
+            if (_runtimeGameConfig != null)
+                Destroy(_runtimeGameConfig);
         }
     }
 }

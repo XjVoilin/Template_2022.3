@@ -1,18 +1,18 @@
+using System.Threading;
 using Cysharp.Threading.Tasks;
-using JulyArch;
-using JulyCore.Core.Launch;
+using JulyBoot;
+using JulyCommon;
 
 namespace GameTemplate.Aot
 {
-    public class LaunchGameStep : ILaunchStep
+    public sealed class LaunchGameStep : ILaunchStep
     {
         public string Name => "Launch Game";
 
-        public async UniTask<bool> ExecuteAsync(LaunchContext ctx)
+        public async UniTask<bool> ExecuteAsync(CancellationToken ct)
         {
-            if (ctx.Registry.TryResolve<IHotUpdateRegistrar>(out var registrar))
-                await registrar.OnGameLaunch();
-
+            ct.ThrowIfCancellationRequested();
+            await JulyDI.Resolve<IHotUpdateRegistrar>().OnGameLaunch();
             return true;
         }
     }

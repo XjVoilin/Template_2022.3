@@ -1,0 +1,20 @@
+{
+    "name": "UniTask.Editor",
+    "rootNamespace": "",
+    "references": [
+        "UniTask",
+        "UnityEditor.UI",
+        "UnityEngine.UI"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": [],
+    "autoReferenced": false,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

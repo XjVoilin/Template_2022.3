@@ -1,35 +1,31 @@
 using System;
+using System.Threading;
 using Cysharp.Threading.Tasks;
-using JulyCore;
-using JulyCore.Core.Launch;
-using JulyCore.Provider.Resource;
+using JulyArch;
+using JulyBoot;
+using JulyCommon;
 
 namespace GameTemplate.Aot
 {
-    public class InitResourceStep : ILaunchStep
+    public sealed class InitResourceStep : ILaunchStep
     {
         public string Name => "Init Resource";
 
-        private bool _providerRegistered;
-
-        public async UniTask<bool> ExecuteAsync(LaunchContext ctx)
+        public async UniTask<bool> ExecuteAsync(CancellationToken ct)
         {
 #if UNITY_YOOASSET
             try
             {
-                if (!_providerRegistered)
-                {
-                    var resourceProvider = new YooAssetResourceProvider(ctx.Config,new CDNEndpoints());
-                    ctx.RegisterProvider<IResourceProvider>(resourceProvider);
-                    _providerRegistered = true;
-                }
-
-                await ctx.InitProvidersAsync();
+                var backend = new YooAssetBackend(JulyDI.Resolve<BootConfig>(), JulyDI.Resolve<CDNEndpoints>());
+                await backend.InitAsync();
+                var resourceSystem = new YooAssetResourceSystem();
+                resourceSystem.Boot(backend);
+                ArchContext.Current.RegisterSystem(resourceSystem);
             }
             catch (OperationCanceledException) { throw; }
             catch (Exception ex)
             {
-                GF.LogError($"[InitResource] {ex.Message}");
+                JLogger.LogError($"[InitResource] {ex.Message}");
                 return false;
             }
 #endif

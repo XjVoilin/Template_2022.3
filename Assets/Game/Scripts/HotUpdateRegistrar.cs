@@ -1,70 +1,52 @@
+using System.Threading;
 using Cysharp.Threading.Tasks;
 using JulyArch;
-using JulyCore;
-using JulyCore.Provider.Config;
-using JulyCore.Provider.Localization;
-using JulyCore.Provider.Resource;
-using JulyCore.Provider.UI;
-using JulyCore.Provider.Audio;
-using JulyCore.Provider.Pool;
+using JulyBoot;
+using JulyCommon;
 using JulyGame;
-#if JULYGF_DEBUG
-using JulyCore.Provider.GM;
-#endif
 
 namespace GameTemplate
 {
-    public class HotUpdateRegistrar : IHotUpdateRegistrar, IArchNode
+    public sealed class HotUpdateRegistrar : IHotUpdateRegistrar, ICanGetSystem
     {
-        public IArchContext GetArchitecture() => GameArch.Context;
-
         public void Register()
         {
-            RegisterProviders();
-            RegisterStores();
-            RegisterSystems();
+            var context = ArchContext.Current;
+            var gameConfig = JulyDI.Resolve<GameConfig>();
+            context.RegisterSystem(new PoolSystem());
+
+            var uiSystem = new UISystem();
+            uiSystem.Configure(gameConfig.UI);
+            uiSystem.ConfigureTip(gameConfig.Tip);
+            context.RegisterSystem(uiSystem);
+
+            var audioSystem = new AudioSystem();
+            audioSystem.Configure(gameConfig.Audio);
+            context.RegisterSystem(audioSystem);
+
+            context.RegisterSystem(new ConfigSystem());
+            context.RegisterSystem(new JsonSerializeSystem());
+            context.RegisterSystem(new NoEncryptionSystem());
+            context.RegisterSystem(new LocalFileSaveSystem());
+            context.RegisterSystem(new SceneSystem());
+            context.RegisterSystem(new InputSystem());
+            context.RegisterSystem(new FsmSystem());
+            context.RegisterSystem(new TimeSystem());
+            context.RegisterSystem(new LocalizationSystem());
         }
 
-        private void RegisterProviders()
+        public async UniTask PreInitializeAsync(CancellationToken ct = default)
         {
-            var resourceProvider = GF.Resolve<IResourceProvider>();
-            var poolProvider = GF.Resolve<IPoolProvider>();
-
-            var configProvider = new LubanConfigProvider(resourceProvider);
-            GF.RegisterProvider<IConfigProvider>(configProvider);
-
-            GF.RegisterProvider<ILocalizationProvider>(new LubanLocalizationProvider(configProvider));
-            GF.RegisterProvider<IUIProvider>(new UIProvider(resourceProvider, poolProvider));
-            GF.RegisterProvider<IAudioProvider>(new UnityAudioProvider(resourceProvider, poolProvider));
-
-#if JULYGF_DEBUG
-            RegisterGMCommands();
-#endif
-        }
-
-#if JULYGF_DEBUG
-        private static void RegisterGMCommands()
-        {
-        }
-#endif
-
-        private void RegisterStores()
-        {
-        }
-
-        private void RegisterSystems()
-        {
+            var tables = await LubanTableLoader.LoadAsync(this.GetSystem<IResourceSystem>(), ct);
+            var configSystem = this.GetSystem<IConfigSystem>();
+            configSystem.SetMainProvider(new DictionaryConfigProvider(tables));
+            this.GetSystem<ILocalizationSystem>().SetMainProvider(new LubanLocalizationProvider(configSystem));
         }
 
         public async UniTask OnGameLaunch()
         {
-            ConfigureUI();
-            await GF.Scene.SwitchAsync("Main");
-        }
-
-        private static void ConfigureUI()
-        {
-            GF.UI.SetWindowConfig(new LubanUIWindowConfigProvider());
+            this.GetSystem<IUISystem>().SetMainProvider(new LubanUIWindowProvider());
+            await this.GetSystem<ISceneSystem>().SwitchSceneAsync("Main");
         }
     }
 }
