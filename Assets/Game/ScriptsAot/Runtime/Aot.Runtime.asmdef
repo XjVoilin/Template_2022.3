@@ -2,10 +2,13 @@
   "name": "Aot.Runtime",
   "rootNamespace": "GameTemplate.Aot",
   "references": [
-    "JulyArch.Runtime",
-    "JulyBoot.Runtime",
-    "JulyCommon.Runtime",
-    "JulyGame.Runtime",
+    "July.Arch",
+    "July.Launch",
+    "July.Logging",
+    "July.Resource",
+    "July.Resource.YooAsset",
+    "July.UI",
+    "July.Audio",
     "UniTask",
     "YooAsset"
   ],

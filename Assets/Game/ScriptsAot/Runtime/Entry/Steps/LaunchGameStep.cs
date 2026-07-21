@@ -1,7 +1,7 @@
 using System.Threading;
 using Cysharp.Threading.Tasks;
-using JulyBoot;
-using JulyCommon;
+using July.Launch;
+using July.Logging;
 
 namespace GameTemplate.Aot
 {
@@ -12,7 +12,7 @@ namespace GameTemplate.Aot
         public async UniTask<bool> ExecuteAsync(CancellationToken ct)
         {
             ct.ThrowIfCancellationRequested();
-            await JulyDI.Resolve<IHotUpdateRegistrar>().OnGameLaunch();
+            await SeedServices.Resolve<IHotUpdateRegistrar>().OnGameLaunch();
             return true;
         }
     }

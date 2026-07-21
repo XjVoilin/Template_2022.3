@@ -1,9 +1,9 @@
-using System;
 using System.Threading;
 using Cysharp.Threading.Tasks;
-using JulyArch;
-using JulyBoot;
-using JulyCommon;
+using July.Arch;
+using July.Launch;
+using July.Resource.YooAsset;
+using YooAsset;
 
 namespace GameTemplate.Aot
 {
@@ -11,25 +11,29 @@ namespace GameTemplate.Aot
     {
         public string Name => "Init Resource";
 
-        public async UniTask<bool> ExecuteAsync(CancellationToken ct)
+        public UniTask<bool> ExecuteAsync(CancellationToken ct)
         {
-#if UNITY_YOOASSET
-            try
+            ct.ThrowIfCancellationRequested();
+            var bootConfig = SeedServices.Resolve<BootConfig>();
+            var endpoints = SeedServices.Resolve<CDNEndpoints>();
+            var options = new YooAssetOptions
             {
-                var backend = new YooAssetBackend(JulyDI.Resolve<BootConfig>(), JulyDI.Resolve<CDNEndpoints>());
-                await backend.InitAsync();
-                var resourceSystem = new YooAssetResourceSystem();
-                resourceSystem.Boot(backend);
-                ArchContext.Current.RegisterSystem(resourceSystem);
-            }
-            catch (OperationCanceledException) { throw; }
-            catch (Exception ex)
-            {
-                JLogger.LogError($"[InitResource] {ex.Message}");
-                return false;
-            }
-#endif
-            return true;
+                PackageName = "DefaultPackage",
+                PlayMode = bootConfig.PlayMode switch
+                {
+                    JPlayMode.EditorSimulateMode => EPlayMode.EditorSimulateMode,
+                    JPlayMode.OfflinePlayMode => EPlayMode.OfflinePlayMode,
+                    JPlayMode.HostPlayMode => EPlayMode.HostPlayMode,
+                    JPlayMode.WebPlayMode => EPlayMode.WebPlayMode,
+                    JPlayMode.CustomPlayMode => EPlayMode.CustomPlayMode,
+                    _ => EPlayMode.OfflinePlayMode
+                },
+                DefaultHostServer = endpoints.MainURL,
+                FallbackHostServer = endpoints.MainURL
+            };
+
+            ArchContext.Current.RegisterSystem(new YooAssetResourceSystem(options));
+            return UniTask.FromResult(true);
         }
     }
 }

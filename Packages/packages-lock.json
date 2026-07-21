@@ -1,18 +1,16 @@
 {
   "dependencies": {
     "com.code-philosophy.hybridclr": {
-      "version": "https://gitee.com/focus-creative-games/hybridclr_unity.git#v8.7.0",
+      "version": "file:com.code-philosophy.hybridclr",
       "depth": 0,
-      "source": "git",
-      "dependencies": {},
-      "hash": "fcef6dfe8ed715cc60a7618a1d2ad62bcace3a80"
+      "source": "embedded",
+      "dependencies": {}
     },
     "com.code-philosophy.luban": {
-      "version": "https://gitee.com/focus-creative-games/luban_unity.git",
+      "version": "file:com.code-philosophy.luban",
       "depth": 0,
-      "source": "git",
-      "dependencies": {},
-      "hash": "d870def77ce13ea942786a6f9e6e55112b46c331"
+      "source": "embedded",
+      "dependencies": {}
     },
     "com.cysharp.unitask": {
       "version": "file:com.cysharp.unitask",
@@ -26,61 +24,315 @@
       "source": "embedded",
       "dependencies": {}
     },
+    "com.july.activity": {
+      "version": "https://github.com/XjVoilin/JulyFramework.git?path=/Packages/com.july.activity#v0.1.0",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {
+        "com.july.arch": "0.1.0",
+        "com.cysharp.unitask": "2.5.10",
+        "com.july.persistence": "0.1.0",
+        "com.july.time": "0.1.0"
+      },
+      "hash": "9c4f72ffbff9839e31615966dea9b599934f26d5"
+    },
+    "com.july.analytics": {
+      "version": "https://github.com/XjVoilin/JulyFramework.git?path=/Packages/com.july.analytics#v0.1.0",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {
+        "com.july.arch": "0.1.0",
+        "com.cysharp.unitask": "2.5.10"
+      },
+      "hash": "9c4f72ffbff9839e31615966dea9b599934f26d5"
+    },
+    "com.july.animation": {
+      "version": "https://github.com/XjVoilin/JulyFramework.git?path=/Packages/com.july.animation#v0.1.0",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {
+        "com.unity.ugui": "1.0.0",
+        "com.demigiant.dotween": "1.2.632"
+      },
+      "hash": "9c4f72ffbff9839e31615966dea9b599934f26d5"
+    },
+    "com.july.animation.spine": {
+      "version": "https://github.com/XjVoilin/JulyFramework.git?path=/Packages/com.july.animation.spine#v0.1.0",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {
+        "com.unity.ugui": "1.0.0",
+        "com.july.animation": "0.1.0"
+      },
+      "hash": "9c4f72ffbff9839e31615966dea9b599934f26d5"
+    },
     "com.july.arch": {
-      "version": "https://github.com/XjVoilin/JulyArch.git#v1.0.34",
+      "version": "https://github.com/XjVoilin/JulyFramework.git?path=/Packages/com.july.arch#v0.1.0",
       "depth": 0,
       "source": "git",
       "dependencies": {
-        "com.july.events": "1.0.0",
-        "com.july.common": "1.0.0"
+        "com.july.logging": "0.1.0",
+        "com.cysharp.unitask": "2.5.10",
+        "com.july.events": "0.1.0"
       },
-      "hash": "3ae9b655e2875058f2b84be4d7df83d8c8cf2ecc"
+      "hash": "9c4f72ffbff9839e31615966dea9b599934f26d5"
     },
-    "com.july.boot": {
-      "version": "https://github.com/XjVoilin/JulyBoot.git#v1.0.3",
+    "com.july.audio": {
+      "version": "https://github.com/XjVoilin/JulyFramework.git?path=/Packages/com.july.audio#v0.1.0",
       "depth": 0,
       "source": "git",
       "dependencies": {
-        "com.july.common": "1.0.0"
+        "com.july.resource": "0.1.0",
+        "com.july.arch": "0.1.0",
+        "com.cysharp.unitask": "2.5.10",
+        "com.demigiant.dotween": "1.2.632"
       },
-      "hash": "5fea11240c8dc377bab269fb3fe15931faf3143e"
+      "hash": "9c4f72ffbff9839e31615966dea9b599934f26d5"
     },
-    "com.july.common": {
-      "version": "https://github.com/XjVoilin/JulyCommon.git#v1.0.2",
+    "com.july.build": {
+      "version": "https://github.com/XjVoilin/JulyFramework.git?path=/Packages/com.july.build#v0.1.0",
       "depth": 0,
       "source": "git",
       "dependencies": {},
-      "hash": "8f7280a5bfdbbf41ed845881b17a019e31adf1d6"
+      "hash": "9c4f72ffbff9839e31615966dea9b599934f26d5"
+    },
+    "com.july.config": {
+      "version": "https://github.com/XjVoilin/JulyFramework.git?path=/Packages/com.july.config#v0.1.0",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {
+        "com.july.arch": "0.1.0",
+        "com.july.logging": "0.1.0"
+      },
+      "hash": "9c4f72ffbff9839e31615966dea9b599934f26d5"
+    },
+    "com.july.diagnostics": {
+      "version": "https://github.com/XjVoilin/JulyFramework.git?path=/Packages/com.july.diagnostics#v0.1.0",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {
+        "com.july.logging": "0.1.0",
+        "com.july.arch": "0.1.0",
+        "com.unity.ugui": "1.0.0",
+        "com.cysharp.unitask": "2.5.10",
+        "com.unity.textmeshpro": "3.0.9"
+      },
+      "hash": "9c4f72ffbff9839e31615966dea9b599934f26d5"
     },
     "com.july.events": {
-      "version": "https://github.com/XjVoilin/JulyEvents.git#v1.0.4",
+      "version": "https://github.com/XjVoilin/JulyFramework.git?path=/Packages/com.july.events#v0.1.0",
       "depth": 0,
       "source": "git",
       "dependencies": {},
-      "hash": "475909203eb9c1a3aae91b62da9fcced36f4b8da"
+      "hash": "9c4f72ffbff9839e31615966dea9b599934f26d5"
     },
-    "com.july.game": {
-      "version": "https://github.com/XjVoilin/JulyGame.git#v1.0.21",
+    "com.july.experiments": {
+      "version": "https://github.com/XjVoilin/JulyFramework.git?path=/Packages/com.july.experiments#v0.1.0",
       "depth": 0,
       "source": "git",
       "dependencies": {
-        "com.july.common": "1.0.0",
-        "com.july.arch": "1.0.24",
-        "com.july.events": "1.0.0"
+        "com.july.arch": "0.1.0",
+        "com.cysharp.unitask": "2.5.10"
       },
-      "hash": "b6415f6f06c9bf11fd87a11213ba368e72230f29"
+      "hash": "9c4f72ffbff9839e31615966dea9b599934f26d5"
     },
-    "com.july.toolkit": {
-      "version": "https://github.com/XjVoilin/JulyToolkit.git#v1.0.29",
+    "com.july.fsm": {
+      "version": "https://github.com/XjVoilin/JulyFramework.git?path=/Packages/com.july.fsm#v0.1.0",
       "depth": 0,
       "source": "git",
       "dependencies": {
-        "com.july.common": "1.0.0",
-        "com.july.arch": "1.0.24",
-        "com.july.game": "1.0.7",
-        "com.july.events": "1.0.0"
+        "com.july.arch": "0.1.0",
+        "com.cysharp.unitask": "2.5.10"
       },
-      "hash": "42fe188ec0b608e1253268b1894254df422eaa54"
+      "hash": "9c4f72ffbff9839e31615966dea9b599934f26d5"
+    },
+    "com.july.guide": {
+      "version": "https://github.com/XjVoilin/JulyFramework.git?path=/Packages/com.july.guide#v0.1.0",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {
+        "com.july.arch": "0.1.0",
+        "com.cysharp.unitask": "2.5.10",
+        "com.july.persistence": "0.1.0"
+      },
+      "hash": "9c4f72ffbff9839e31615966dea9b599934f26d5"
+    },
+    "com.july.launch": {
+      "version": "https://github.com/XjVoilin/JulyFramework.git?path=/Packages/com.july.launch#v0.1.0",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {
+        "com.cysharp.unitask": "2.5.10",
+        "com.july.logging": "0.1.0"
+      },
+      "hash": "9c4f72ffbff9839e31615966dea9b599934f26d5"
+    },
+    "com.july.localization": {
+      "version": "https://github.com/XjVoilin/JulyFramework.git?path=/Packages/com.july.localization#v0.1.0",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {
+        "com.july.logging": "0.1.0",
+        "com.july.arch": "0.1.0",
+        "com.unity.ugui": "1.0.0",
+        "com.cysharp.unitask": "2.5.10",
+        "com.unity.textmeshpro": "3.0.9"
+      },
+      "hash": "9c4f72ffbff9839e31615966dea9b599934f26d5"
+    },
+    "com.july.logging": {
+      "version": "https://github.com/XjVoilin/JulyFramework.git?path=/Packages/com.july.logging#v0.1.0",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "9c4f72ffbff9839e31615966dea9b599934f26d5"
+    },
+    "com.july.networking": {
+      "version": "https://github.com/XjVoilin/JulyFramework.git?path=/Packages/com.july.networking#v0.1.0",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {
+        "com.july.logging": "0.1.0",
+        "com.july.arch": "0.1.0",
+        "com.cysharp.unitask": "2.5.10",
+        "com.july.persistence": "0.1.0",
+        "com.unity.modules.unitywebrequest": "1.0.0"
+      },
+      "hash": "9c4f72ffbff9839e31615966dea9b599934f26d5"
+    },
+    "com.july.persistence": {
+      "version": "https://github.com/XjVoilin/JulyFramework.git?path=/Packages/com.july.persistence#v0.1.0",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {
+        "com.july.logging": "0.1.0",
+        "com.july.arch": "0.1.0",
+        "com.cysharp.unitask": "2.5.10"
+      },
+      "hash": "9c4f72ffbff9839e31615966dea9b599934f26d5"
+    },
+    "com.july.platform": {
+      "version": "https://github.com/XjVoilin/JulyFramework.git?path=/Packages/com.july.platform#v0.1.0",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {
+        "com.july.arch": "0.1.0",
+        "com.cysharp.unitask": "2.5.10"
+      },
+      "hash": "9c4f72ffbff9839e31615966dea9b599934f26d5"
+    },
+    "com.july.pooling": {
+      "version": "https://github.com/XjVoilin/JulyFramework.git?path=/Packages/com.july.pooling#v0.1.0",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {
+        "com.july.arch": "0.1.0",
+        "com.july.logging": "0.1.0"
+      },
+      "hash": "9c4f72ffbff9839e31615966dea9b599934f26d5"
+    },
+    "com.july.reddot": {
+      "version": "https://github.com/XjVoilin/JulyFramework.git?path=/Packages/com.july.reddot#v0.1.0",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {
+        "com.july.logging": "0.1.0",
+        "com.july.arch": "0.1.0",
+        "com.july.events": "0.1.0",
+        "com.unity.ugui": "1.0.0",
+        "com.cysharp.unitask": "2.5.10",
+        "com.unity.textmeshpro": "3.0.9"
+      },
+      "hash": "9c4f72ffbff9839e31615966dea9b599934f26d5"
+    },
+    "com.july.resource": {
+      "version": "https://github.com/XjVoilin/JulyFramework.git?path=/Packages/com.july.resource#v0.1.0",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {
+        "com.july.logging": "0.1.0",
+        "com.july.arch": "0.1.0",
+        "com.cysharp.unitask": "2.5.10"
+      },
+      "hash": "9c4f72ffbff9839e31615966dea9b599934f26d5"
+    },
+    "com.july.resource.yooasset": {
+      "version": "https://github.com/XjVoilin/JulyFramework.git?path=/Packages/com.july.resource.yooasset#v0.1.0",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {
+        "com.july.resource": "0.1.0",
+        "com.july.arch": "0.1.0",
+        "com.cysharp.unitask": "2.5.10",
+        "com.tuyoogame.yooasset": "2.3.12"
+      },
+      "hash": "9c4f72ffbff9839e31615966dea9b599934f26d5"
+    },
+    "com.july.scene": {
+      "version": "https://github.com/XjVoilin/JulyFramework.git?path=/Packages/com.july.scene#v0.1.0",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {
+        "com.july.logging": "0.1.0",
+        "com.july.arch": "0.1.0",
+        "com.cysharp.unitask": "2.5.10",
+        "com.july.resource": "0.1.0"
+      },
+      "hash": "9c4f72ffbff9839e31615966dea9b599934f26d5"
+    },
+    "com.july.tasks": {
+      "version": "https://github.com/XjVoilin/JulyFramework.git?path=/Packages/com.july.tasks#v0.1.0",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {
+        "com.july.logging": "0.1.0",
+        "com.july.arch": "0.1.0",
+        "com.cysharp.unitask": "2.5.10"
+      },
+      "hash": "9c4f72ffbff9839e31615966dea9b599934f26d5"
+    },
+    "com.july.time": {
+      "version": "https://github.com/XjVoilin/JulyFramework.git?path=/Packages/com.july.time#v0.1.0",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {
+        "com.july.logging": "0.1.0",
+        "com.july.arch": "0.1.0",
+        "com.cysharp.unitask": "2.5.10",
+        "com.unity.modules.unitywebrequest": "1.0.0"
+      },
+      "hash": "9c4f72ffbff9839e31615966dea9b599934f26d5"
+    },
+    "com.july.ui": {
+      "version": "https://github.com/XjVoilin/JulyFramework.git?path=/Packages/com.july.ui#v0.1.0",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {
+        "com.july.resource": "0.1.0",
+        "com.demigiant.dotween": "1.2.632",
+        "com.cysharp.unitask": "2.5.10",
+        "com.july.logging": "0.1.0",
+        "com.july.animation": "0.1.0",
+        "com.unity.ugui": "1.0.0",
+        "com.july.arch": "0.1.0",
+        "com.july.audio": "0.1.0",
+        "com.unity.textmeshpro": "3.0.9",
+        "com.unity.modules.unitywebrequest": "1.0.0",
+        "com.unity.modules.unitywebrequesttexture": "1.0.0"
+      },
+      "hash": "9c4f72ffbff9839e31615966dea9b599934f26d5"
+    },
+    "com.july.ui.authoring": {
+      "version": "https://github.com/XjVoilin/JulyFramework.git?path=/Packages/com.july.ui.authoring#v0.1.0",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {
+        "com.july.arch": "0.1.0",
+        "com.july.ui": "0.1.0",
+        "com.unity.ugui": "1.0.0",
+        "com.unity.textmeshpro": "3.0.9"
+      },
+      "hash": "9c4f72ffbff9839e31615966dea9b599934f26d5"
     },
     "com.tuyoogame.yooasset": {
       "version": "file:com.tuyoogame.yooasset@2.3.12",
@@ -197,13 +449,6 @@
         "com.unity.mathematics": "1.2.1",
         "com.unity.modules.jsonserialize": "1.0.0"
       },
-      "url": "https://packages.unity.com"
-    },
-    "com.unity.collab-proxy": {
-      "version": "2.11.4",
-      "depth": 0,
-      "source": "registry",
-      "dependencies": {},
       "url": "https://packages.unity.com"
     },
     "com.unity.collections": {
@@ -350,7 +595,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.ugui": {
-      "version": "2.0.0",
+      "version": "1.0.0",
       "depth": 0,
       "source": "builtin",
       "dependencies": {
@@ -368,47 +613,27 @@
       },
       "url": "https://packages.unity.com"
     },
-    "com.unity.modules.ai": {
-      "version": "1.0.0",
-      "depth": 0,
-      "source": "builtin",
-      "dependencies": {}
-    },
-    "com.unity.modules.androidjni": {
-      "version": "1.0.0",
-      "depth": 0,
-      "source": "builtin",
-      "dependencies": {}
-    },
     "com.unity.modules.animation": {
       "version": "1.0.0",
-      "depth": 0,
+      "depth": 1,
       "source": "builtin",
       "dependencies": {}
     },
     "com.unity.modules.assetbundle": {
       "version": "1.0.0",
-      "depth": 0,
+      "depth": 1,
       "source": "builtin",
       "dependencies": {}
     },
     "com.unity.modules.audio": {
       "version": "1.0.0",
-      "depth": 0,
+      "depth": 1,
       "source": "builtin",
       "dependencies": {}
     },
-    "com.unity.modules.cloth": {
-      "version": "1.0.0",
-      "depth": 0,
-      "source": "builtin",
-      "dependencies": {
-        "com.unity.modules.physics": "1.0.0"
-      }
-    },
     "com.unity.modules.director": {
       "version": "1.0.0",
-      "depth": 0,
+      "depth": 1,
       "source": "builtin",
       "dependencies": {
         "com.unity.modules.audio": "1.0.0",
@@ -417,74 +642,49 @@
     },
     "com.unity.modules.imageconversion": {
       "version": "1.0.0",
-      "depth": 0,
+      "depth": 2,
       "source": "builtin",
       "dependencies": {}
     },
     "com.unity.modules.imgui": {
       "version": "1.0.0",
-      "depth": 0,
+      "depth": 1,
       "source": "builtin",
       "dependencies": {}
     },
     "com.unity.modules.jsonserialize": {
       "version": "1.0.0",
-      "depth": 0,
+      "depth": 1,
       "source": "builtin",
       "dependencies": {}
     },
     "com.unity.modules.particlesystem": {
       "version": "1.0.0",
-      "depth": 0,
+      "depth": 1,
       "source": "builtin",
       "dependencies": {}
     },
     "com.unity.modules.physics": {
       "version": "1.0.0",
-      "depth": 0,
+      "depth": 2,
       "source": "builtin",
       "dependencies": {}
     },
     "com.unity.modules.physics2d": {
       "version": "1.0.0",
-      "depth": 0,
+      "depth": 2,
       "source": "builtin",
       "dependencies": {}
-    },
-    "com.unity.modules.screencapture": {
-      "version": "1.0.0",
-      "depth": 0,
-      "source": "builtin",
-      "dependencies": {
-        "com.unity.modules.imageconversion": "1.0.0"
-      }
-    },
-    "com.unity.modules.subsystems": {
-      "version": "1.0.0",
-      "depth": 1,
-      "source": "builtin",
-      "dependencies": {
-        "com.unity.modules.jsonserialize": "1.0.0"
-      }
     },
     "com.unity.modules.terrain": {
       "version": "1.0.0",
-      "depth": 0,
+      "depth": 2,
       "source": "builtin",
       "dependencies": {}
     },
-    "com.unity.modules.terrainphysics": {
-      "version": "1.0.0",
-      "depth": 0,
-      "source": "builtin",
-      "dependencies": {
-        "com.unity.modules.physics": "1.0.0",
-        "com.unity.modules.terrain": "1.0.0"
-      }
-    },
     "com.unity.modules.tilemap": {
       "version": "1.0.0",
-      "depth": 0,
+      "depth": 2,
       "source": "builtin",
       "dependencies": {
         "com.unity.modules.physics2d": "1.0.0"
@@ -492,13 +692,13 @@
     },
     "com.unity.modules.ui": {
       "version": "1.0.0",
-      "depth": 0,
+      "depth": 1,
       "source": "builtin",
       "dependencies": {}
     },
     "com.unity.modules.uielements": {
       "version": "1.0.0",
-      "depth": 0,
+      "depth": 2,
       "source": "builtin",
       "dependencies": {
         "com.unity.modules.ui": "1.0.0",
@@ -506,109 +706,28 @@
         "com.unity.modules.jsonserialize": "1.0.0"
       }
     },
-    "com.unity.modules.umbra": {
-      "version": "1.0.0",
-      "depth": 0,
-      "source": "builtin",
-      "dependencies": {}
-    },
-    "com.unity.modules.unityanalytics": {
-      "version": "1.0.0",
-      "depth": 0,
-      "source": "builtin",
-      "dependencies": {
-        "com.unity.modules.unitywebrequest": "1.0.0",
-        "com.unity.modules.jsonserialize": "1.0.0"
-      }
-    },
     "com.unity.modules.unitywebrequest": {
       "version": "1.0.0",
-      "depth": 0,
+      "depth": 1,
       "source": "builtin",
       "dependencies": {}
     },
     "com.unity.modules.unitywebrequestassetbundle": {
       "version": "1.0.0",
-      "depth": 0,
+      "depth": 1,
       "source": "builtin",
       "dependencies": {
         "com.unity.modules.assetbundle": "1.0.0",
         "com.unity.modules.unitywebrequest": "1.0.0"
-      }
-    },
-    "com.unity.modules.unitywebrequestaudio": {
-      "version": "1.0.0",
-      "depth": 0,
-      "source": "builtin",
-      "dependencies": {
-        "com.unity.modules.unitywebrequest": "1.0.0",
-        "com.unity.modules.audio": "1.0.0"
       }
     },
     "com.unity.modules.unitywebrequesttexture": {
       "version": "1.0.0",
-      "depth": 0,
+      "depth": 1,
       "source": "builtin",
       "dependencies": {
         "com.unity.modules.unitywebrequest": "1.0.0",
         "com.unity.modules.imageconversion": "1.0.0"
-      }
-    },
-    "com.unity.modules.unitywebrequestwww": {
-      "version": "1.0.0",
-      "depth": 0,
-      "source": "builtin",
-      "dependencies": {
-        "com.unity.modules.unitywebrequest": "1.0.0",
-        "com.unity.modules.unitywebrequestassetbundle": "1.0.0",
-        "com.unity.modules.unitywebrequestaudio": "1.0.0",
-        "com.unity.modules.audio": "1.0.0",
-        "com.unity.modules.assetbundle": "1.0.0",
-        "com.unity.modules.imageconversion": "1.0.0"
-      }
-    },
-    "com.unity.modules.vehicles": {
-      "version": "1.0.0",
-      "depth": 0,
-      "source": "builtin",
-      "dependencies": {
-        "com.unity.modules.physics": "1.0.0"
-      }
-    },
-    "com.unity.modules.video": {
-      "version": "1.0.0",
-      "depth": 0,
-      "source": "builtin",
-      "dependencies": {
-        "com.unity.modules.audio": "1.0.0",
-        "com.unity.modules.ui": "1.0.0",
-        "com.unity.modules.unitywebrequest": "1.0.0"
-      }
-    },
-    "com.unity.modules.vr": {
-      "version": "1.0.0",
-      "depth": 0,
-      "source": "builtin",
-      "dependencies": {
-        "com.unity.modules.jsonserialize": "1.0.0",
-        "com.unity.modules.physics": "1.0.0",
-        "com.unity.modules.xr": "1.0.0"
-      }
-    },
-    "com.unity.modules.wind": {
-      "version": "1.0.0",
-      "depth": 0,
-      "source": "builtin",
-      "dependencies": {}
-    },
-    "com.unity.modules.xr": {
-      "version": "1.0.0",
-      "depth": 0,
-      "source": "builtin",
-      "dependencies": {
-        "com.unity.modules.physics": "1.0.0",
-        "com.unity.modules.jsonserialize": "1.0.0",
-        "com.unity.modules.subsystems": "1.0.0"
       }
     }
   }

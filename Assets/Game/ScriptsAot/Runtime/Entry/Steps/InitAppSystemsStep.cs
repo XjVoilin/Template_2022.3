@@ -1,8 +1,8 @@
 using System.Threading;
 using Cysharp.Threading.Tasks;
-using JulyArch;
-using JulyBoot;
-using JulyCommon;
+using July.Arch;
+using July.Launch;
+using July.Logging;
 
 namespace GameTemplate.Aot
 {
@@ -12,9 +12,9 @@ namespace GameTemplate.Aot
 
         public async UniTask<bool> ExecuteAsync(CancellationToken ct)
         {
-            var registrar = JulyDI.Resolve<IHotUpdateRegistrar>();
-            await registrar.PreInitializeAsync(ct);
+            var registrar = SeedServices.Resolve<IHotUpdateRegistrar>();
             await ArchContext.Current.InitializeAsync(ct);
+            await registrar.PreInitializeAsync(ct);
             return true;
         }
     }

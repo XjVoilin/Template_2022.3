@@ -1,7 +1,8 @@
 using System;
 using System.Collections.Generic;
 using cfg;
-using JulyGame;
+using July.Config;
+using July.Localization;
 
 namespace GameTemplate
 {

@@ -1,6 +1,7 @@
 using cfg;
-using JulyArch;
-using JulyGame;
+using July.Arch;
+using July.Config;
+using July.UI;
 
 namespace GameTemplate
 {

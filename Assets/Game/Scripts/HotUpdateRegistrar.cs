@@ -1,9 +1,18 @@
 using System.Threading;
 using Cysharp.Threading.Tasks;
-using JulyArch;
-using JulyBoot;
-using JulyCommon;
-using JulyGame;
+using GameTemplate.Aot;
+using July.Arch;
+using July.Audio;
+using July.Launch;
+using July.Config;
+using July.Fsm;
+using July.Localization;
+using July.Persistence;
+using July.Pooling;
+using July.Resource;
+using July.Scene;
+using July.Time;
+using July.UI;
 
 namespace GameTemplate
 {
@@ -12,7 +21,7 @@ namespace GameTemplate
         public void Register()
         {
             var context = ArchContext.Current;
-            var gameConfig = JulyDI.Resolve<GameConfig>();
+            var gameConfig = SeedServices.Resolve<GameConfig>();
             context.RegisterSystem(new PoolSystem());
 
             var uiSystem = new UISystem();

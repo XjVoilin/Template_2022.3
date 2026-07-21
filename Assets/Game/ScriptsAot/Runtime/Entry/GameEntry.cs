@@ -1,7 +1,6 @@
-using JulyArch;
-using JulyBoot;
-using JulyCommon;
-using JulyGame;
+using July.Arch;
+using July.Launch;
+using July.Logging;
 using UnityEngine;
 
 namespace GameTemplate.Aot
@@ -23,7 +22,7 @@ namespace GameTemplate.Aot
                 JLogger.LogWarning("[GameEntry] GameConfig is not assigned; using runtime defaults");
             }
 
-            JulyDI.Register(gameConfig);
+            SeedServices.Register(gameConfig);
 
 #if !JULYGF_DEBUG
             Application.SetStackTraceLogType(LogType.Log, StackTraceLogType.None);
@@ -46,6 +45,7 @@ namespace GameTemplate.Aot
         protected override void OnDestroy()
         {
             ArchContext.Current?.Shutdown();
+            SeedServices.Clear();
             base.OnDestroy();
 
             if (_runtimeGameConfig != null)

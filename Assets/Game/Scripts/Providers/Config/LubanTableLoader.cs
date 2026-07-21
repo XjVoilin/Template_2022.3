@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Threading;
 using cfg;
 using Cysharp.Threading.Tasks;
-using JulyCommon;
-using JulyGame;
+using July.Logging;
+using July.Resource;
 using SimpleJSON;
 using UnityEngine;
 
@@ -26,7 +26,7 @@ namespace GameTemplate
 
             var tables = new Tables(name => jsonCache.TryGetValue(name, out var json)
                 ? JSON.Parse(json)
-                : throw new JulyException($"Config not found: {name}"));
+                : throw new InvalidOperationException($"Config not found: {name}"));
 
             var registry = new Dictionary<Type, object> { [typeof(Tables)] = tables };
             tables.RegisterTo(registry);
@@ -38,7 +38,7 @@ namespace GameTemplate
             string name, CancellationToken ct)
         {
             using var handle = await resourceSystem.LoadAssetAsync<TextAsset>(name, ct);
-            if (handle?.Asset == null) throw new JulyException($"Config asset not found: {name}");
+            if (handle?.Asset == null) throw new InvalidOperationException($"Config asset not found: {name}");
             return (name, handle.Asset.text);
         }
     }

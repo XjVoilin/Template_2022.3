@@ -1,6 +1,6 @@
 using Cysharp.Threading.Tasks;
-using JulyArch;
-using JulyGame;
+using July.Arch;
+using July.Persistence;
 
 namespace GameTemplate
 {

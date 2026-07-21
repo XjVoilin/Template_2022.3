@@ -2,8 +2,8 @@ using System;
 using System.Reflection;
 using System.Threading;
 using Cysharp.Threading.Tasks;
-using JulyBoot;
-using JulyCommon;
+using July.Launch;
+using July.Logging;
 
 namespace GameTemplate.Aot
 {
@@ -17,7 +17,7 @@ namespace GameTemplate.Aot
             var registrar = FindRegistrar();
             if (registrar == null) return UniTask.FromResult(false);
             registrar.Register();
-            JulyDI.Register<IHotUpdateRegistrar>(registrar);
+            SeedServices.Register<IHotUpdateRegistrar>(registrar);
             return UniTask.FromResult(true);
         }
 

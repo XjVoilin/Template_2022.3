@@ -1,8 +1,8 @@
 using System.Threading;
 using Cysharp.Threading.Tasks;
-using JulyArch;
-using JulyBoot;
-using JulyCommon;
+using July.Arch;
+using July.Launch;
+using July.Logging;
 
 namespace GameTemplate.Aot
 {
@@ -21,8 +21,8 @@ namespace GameTemplate.Aot
         {
             ct.ThrowIfCancellationRequested();
             _ = new ArchContext();
-            JulyDI.Register(_bootConfig);
-            JulyDI.Register(string.IsNullOrWhiteSpace(_bootConfig.CdnUrl)
+            SeedServices.Register(_bootConfig);
+            SeedServices.Register(string.IsNullOrWhiteSpace(_bootConfig.CdnUrl)
                 ? CDNEndpoints.Empty
                 : new CDNEndpoints(_bootConfig.CdnUrl.TrimEnd('/')));
             return UniTask.FromResult(true);
