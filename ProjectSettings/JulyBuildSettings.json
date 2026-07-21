@@ -1,0 +1,15 @@
+{
+  "platform": "auto",
+  "environment": "dev",
+  "coreVersion": "0.1.0",
+  "contentVersion": "0.1.0",
+  "packageName": "DefaultPackage",
+  "outputRoot": "BuildArtifacts",
+  "generateLuban": true,
+  "generateHybridClr": true,
+  "buildPlayer": true,
+  "developmentBuild": true,
+  "coscliPath": "Tools/coscli/coscli.exe",
+  "cosBucket": "",
+  "cosPrefix": "releases"
+}

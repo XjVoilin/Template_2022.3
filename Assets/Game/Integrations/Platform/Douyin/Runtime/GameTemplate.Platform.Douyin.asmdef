@@ -1,0 +1,23 @@
+{
+  "name": "GameTemplate.Platform.Douyin",
+  "rootNamespace": "GameTemplate.Integrations.Douyin",
+  "references": [
+    "Aot.Runtime",
+    "July.Platform",
+    "July.UI",
+    "UniTask",
+    "com.bytedance.ttsdk.ref",
+    "TTLitJson"
+  ],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": true,
+  "defineConstraints": [
+    "JULYGF_DY_MINIGAME"
+  ],
+  "versionDefines": [],
+  "noEngineReferences": false
+}

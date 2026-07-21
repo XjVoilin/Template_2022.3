@@ -52,4 +52,30 @@ MonoBehaviour:
         PackRuleName: PackDirectory
         FilterRuleName: CollectAll
         AssetTags: 
+        UserData:
+    - GroupName: HotUpdate
+      GroupDesc: HybridCLR hot-update assemblies
+      AssetTags: HotUpdate
+      ActiveRuleName: EnableGroup
+      Collectors:
+      - CollectPath: Assets/Game/Res/HotUpdateDlls
+        CollectorGUID: 3d19a86013924726a8a98e252a307d44
+        CollectorType: 0
+        AddressRuleName: AddressByFileName
+        PackRuleName: PackDirectory
+        FilterRuleName: CollectAll
+        AssetTags: HotUpdate
+        UserData:
+    - GroupName: AOTMetadata
+      GroupDesc: HybridCLR supplemental AOT metadata
+      AssetTags: AOTMetadata
+      ActiveRuleName: EnableGroup
+      Collectors:
+      - CollectPath: Assets/Game/Res/AOTMetaDlls
+        CollectorGUID: 4fc13cb6e47f4dc0b9b9142c39e9252b
+        CollectorType: 0
+        AddressRuleName: AddressByFileName
+        PackRuleName: PackDirectory
+        FilterRuleName: CollectAll
+        AssetTags: AOTMetadata
         UserData: 

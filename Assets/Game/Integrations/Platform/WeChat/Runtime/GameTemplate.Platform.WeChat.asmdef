@@ -1,0 +1,22 @@
+{
+  "name": "GameTemplate.Platform.WeChat",
+  "rootNamespace": "GameTemplate.Integrations.WeChat",
+  "references": [
+    "Aot.Runtime",
+    "July.Platform",
+    "July.UI",
+    "UniTask",
+    "Wx"
+  ],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": true,
+  "defineConstraints": [
+    "JULYGF_WX_MINIGAME"
+  ],
+  "versionDefines": [],
+  "noEngineReferences": false
+}

@@ -9,6 +9,9 @@
     "July.Resource.YooAsset",
     "July.UI",
     "July.Audio",
+    "July.Analytics",
+    "July.Platform",
+    "HybridCLR.Runtime",
     "UniTask",
     "YooAsset"
   ],

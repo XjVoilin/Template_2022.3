@@ -11,15 +11,20 @@ namespace GameTemplate.Aot
     {
         public string Name => "Init Resource";
 
-        public UniTask<bool> ExecuteAsync(CancellationToken ct)
+        public async UniTask<bool> ExecuteAsync(CancellationToken ct)
         {
             ct.ThrowIfCancellationRequested();
             var bootConfig = SeedServices.Resolve<BootConfig>();
             var endpoints = SeedServices.Resolve<CDNEndpoints>();
+            var playMode = bootConfig.PlayMode;
+#if !UNITY_EDITOR
+            if (playMode == JPlayMode.EditorSimulateMode)
+                playMode = JPlayMode.OfflinePlayMode;
+#endif
             var options = new YooAssetOptions
             {
                 PackageName = "DefaultPackage",
-                PlayMode = bootConfig.PlayMode switch
+                PlayMode = playMode switch
                 {
                     JPlayMode.EditorSimulateMode => EPlayMode.EditorSimulateMode,
                     JPlayMode.OfflinePlayMode => EPlayMode.OfflinePlayMode,
@@ -29,11 +34,13 @@ namespace GameTemplate.Aot
                     _ => EPlayMode.OfflinePlayMode
                 },
                 DefaultHostServer = endpoints.MainURL,
-                FallbackHostServer = endpoints.MainURL
+                FallbackHostServer = endpoints.MainURL,
+                UpdateManifestAfterInitialization = false,
             };
 
+            await YooAssetBootstrap.InitializeAsync(options, ct);
             ArchContext.Current.RegisterSystem(new YooAssetResourceSystem(options));
-            return UniTask.FromResult(true);
+            return true;
         }
     }
 }

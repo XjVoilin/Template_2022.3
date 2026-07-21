@@ -31,6 +31,8 @@ namespace GameTemplate.Aot
 
             pipeline.Add(new BootArchStep(_bootConfig));
             pipeline.Add(new InitResourceStep());
+            pipeline.Add(new LoadHotUpdateAssembliesStep());
+            pipeline.Add(new RegisterIntegrationsStep(_bootConfig));
             pipeline.Add(new RegisterAppSystemsStep());
             pipeline.Add(new InitAppSystemsStep());
             pipeline.Add(new LaunchGameStep());

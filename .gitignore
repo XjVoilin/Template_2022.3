@@ -7,3 +7,8 @@ UserSettings
 Assembly-CSharp.csproj
 *.csproj
 *.sln
+BuildArtifacts
+HybridCLRData
+Assets/Game/Res/HotUpdateDlls/*
+Assets/Game/Res/AOTMetaDlls/*
+Assets/StreamingAssets
