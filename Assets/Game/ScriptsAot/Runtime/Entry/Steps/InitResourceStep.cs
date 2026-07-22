@@ -35,11 +35,21 @@ namespace GameTemplate.Aot
                 },
                 DefaultHostServer = endpoints.MainURL,
                 FallbackHostServer = endpoints.MainURL,
-                UpdateManifestAfterInitialization = false,
             };
 
-            await YooAssetBootstrap.InitializeAsync(options, ct);
-            ArchContext.Current.RegisterSystem(new YooAssetResourceSystem(options));
+#if UNITY_WEBGL && JULYGF_WX_MINIGAME
+            options.PlayMode = EPlayMode.WebPlayMode;
+            options.CreateInitializeParameters = _ =>
+                WeChatYooAssetFileSystem.CreateInitializeParameters(endpoints.MainURL);
+#elif UNITY_WEBGL && JULYGF_DY_MINIGAME
+            options.PlayMode = EPlayMode.WebPlayMode;
+            options.CreateInitializeParameters = _ =>
+                TikTokYooAssetFileSystem.CreateInitializeParameters(endpoints.MainURL);
+#endif
+
+            var resourceSystem = new YooAssetResourceSystem(options);
+            await resourceSystem.InitializeAsync(ct);
+            ArchContext.Current.RegisterSystem(resourceSystem);
             return true;
         }
     }

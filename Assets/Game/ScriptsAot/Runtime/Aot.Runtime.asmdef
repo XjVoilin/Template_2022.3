@@ -10,7 +10,11 @@
     "July.UI",
     "July.Audio",
     "July.Analytics",
+    "July.Analytics.ThinkingData",
     "July.Platform",
+    "July.Platform.WeChat",
+    "July.Platform.TikTok",
+    "YooAsset.MiniGame",
     "HybridCLR.Runtime",
     "UniTask",
     "YooAsset"

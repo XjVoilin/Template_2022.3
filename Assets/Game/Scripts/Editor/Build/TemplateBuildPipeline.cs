@@ -98,7 +98,7 @@ namespace GameTemplate.Editor.Build
         private static string ResolvePlatform(string configured)
         {
             return string.Equals(configured, "auto", StringComparison.OrdinalIgnoreCase)
-                ? IntegrationProfileMenu.ResolveActivePlatform()
+                ? PlatformProfileMenu.ResolveActivePlatform()
                 : (configured ?? string.Empty).Trim().ToLowerInvariant();
         }
 

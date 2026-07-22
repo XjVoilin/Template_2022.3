@@ -1,11 +1,9 @@
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using CozyYard.Editor;
 using HybridCLR.Editor;
-using HybridCLR.Editor.Commands;
 using HybridCLR.Editor.Installer;
 using July.Build;
 using UnityEditor;
@@ -42,7 +40,7 @@ namespace GameTemplate.Editor.Build
                 return $"Release {request.ContentVersion} already exists: {existingManifest}. " +
                        "Bump contentVersion or pass -allowOverwrite true.";
 
-            var sdkError = IntegrationProfileMenu.ValidateBuildProfile(context.Platform);
+            var sdkError = PlatformProfileMenu.ValidateBuildProfile(context.Platform);
             if (!string.IsNullOrEmpty(sdkError)) return sdkError;
 
             if (settings.generateHybridClr)
@@ -51,7 +49,7 @@ namespace GameTemplate.Editor.Build
                     return "HybridCLR is not initialized. Run HybridCLR/Installer before building.";
                 if (!SettingsUtil.Enable)
                     return "HybridCLR is disabled in ProjectSettings/HybridCLRSettings.asset.";
-                if (SettingsUtil.HotUpdateAssemblyNamesExcludePreserved.Count == 0)
+                if (!HybridCLRBuildService.ValidateSettings(false))
                     return "HybridCLR has no hot-update assemblies configured.";
                 if (request.ContentOnly && !Directory.Exists(HybridClrArtifactUtility.GetBaselineDirectory(context)))
                     return $"AOT baseline not found for coreVersion {request.CoreVersion}. Run a full build first.";
@@ -87,9 +85,10 @@ namespace GameTemplate.Editor.Build
 
         public BuildStepResult Execute(BuildContext context)
         {
-            PrebuildCommand.GenerateAll();
-            AssetDatabase.Refresh();
-            return BuildStepResult.Success();
+            var profile = HybridClrArtifactUtility.CreateProfile(context);
+            return HybridCLRBuildService.GenerateAllAndCopyDlls(profile, context.Target)
+                ? BuildStepResult.Success()
+                : BuildStepResult.Failure("HybridCLR Generate All or DLL copy failed.");
         }
     }
 
@@ -101,8 +100,12 @@ namespace GameTemplate.Editor.Build
         public BuildStepResult Execute(BuildContext context)
         {
             var settings = context.GetRequired<TemplateBuildSettings>(TemplateBuildKeys.Settings);
-            CompileDllCommand.CompileDll(context.Target, settings.developmentBuild);
-            return BuildStepResult.Success();
+            var request = context.GetRequired<TemplateBuildRequest>(TemplateBuildKeys.Request);
+            var profile = HybridClrArtifactUtility.CreateProfile(context);
+            return HybridCLRBuildService.CompileHotUpdateOnly(profile, context.Target,
+                context.Platform, request.CoreVersion, settings.developmentBuild)
+                ? BuildStepResult.Success()
+                : BuildStepResult.Failure("HybridCLR hot-update compilation failed.");
         }
     }
 
@@ -110,7 +113,8 @@ namespace GameTemplate.Editor.Build
     {
         public string Name => "Sync HybridCLR Artifacts";
         public string Validate(BuildContext context) => null;
-        public BuildStepResult Execute(BuildContext context) => HybridClrArtifactUtility.Sync(context);
+        public BuildStepResult Execute(BuildContext context) =>
+            HybridClrArtifactUtility.WriteManifest(context);
     }
 
     internal sealed class ArchiveAotBaselineStep : IBuildStep
@@ -126,7 +130,15 @@ namespace GameTemplate.Editor.Build
             return null;
         }
 
-        public BuildStepResult Execute(BuildContext context) => HybridClrArtifactUtility.ArchiveBaseline(context);
+        public BuildStepResult Execute(BuildContext context)
+        {
+            var request = context.GetRequired<TemplateBuildRequest>(TemplateBuildKeys.Request);
+            var profile = HybridClrArtifactUtility.CreateProfile(context);
+            return HybridCLRBuildService.BackupAotDlls(profile, context.Target,
+                context.Platform, request.CoreVersion)
+                ? BuildStepResult.Success()
+                : BuildStepResult.Failure("HybridCLR AOT baseline backup failed.");
+        }
     }
 
     [Serializable]
@@ -141,103 +153,50 @@ namespace GameTemplate.Editor.Build
         private const string HotUpdateDirectory = "Assets/Game/Res/HotUpdateDlls";
         private const string AotMetadataDirectory = "Assets/Game/Res/AOTMetaDlls";
         private const string ManifestPath = HotUpdateDirectory + "/hybridclr-manifest.json";
-        private static readonly Regex AotSection = new(
-            @"//\s*\{\{\s*AOT assemblies(.+?)//\s*\}\}", RegexOptions.Singleline);
-        private static readonly Regex DllName = new("\"([^\"]+\\.dll)\"");
+
+        public static HybridCLRBuildProfile CreateProfile(BuildContext context)
+        {
+            var settings = context.GetRequired<TemplateBuildSettings>(TemplateBuildKeys.Settings);
+            var projectRoot = context.GetRequired<string>(TemplateBuildKeys.ProjectRoot);
+            var backupRoot = Path.GetFullPath(Path.Combine(projectRoot, settings.outputRoot,
+                "AOTBaselines"));
+            var referencesPath = Path.Combine(Application.dataPath,
+                SettingsUtil.HybridCLRSettings.outputAOTGenericReferenceFile);
+            return new HybridCLRBuildProfile(HotUpdateDirectory, AotMetadataDirectory,
+                backupRoot, referencesPath, new[] { "Aot.Runtime" });
+        }
 
         public static string GetBaselineDirectory(BuildContext context)
         {
-            var settings = context.GetRequired<TemplateBuildSettings>(TemplateBuildKeys.Settings);
             var request = context.GetRequired<TemplateBuildRequest>(TemplateBuildKeys.Request);
-            var projectRoot = context.GetRequired<string>(TemplateBuildKeys.ProjectRoot);
-            return Path.GetFullPath(Path.Combine(projectRoot, settings.outputRoot, "AOTBaselines",
-                context.Target.ToString(), context.Platform, request.CoreVersion));
+            return HybridCLRBuildService.GetAotBackupDirectory(CreateProfile(context),
+                context.Target, context.Platform, request.CoreVersion);
         }
 
-        public static BuildStepResult Sync(BuildContext context)
+        public static BuildStepResult WriteManifest(BuildContext context)
         {
-            Directory.CreateDirectory(HotUpdateDirectory);
-            Directory.CreateDirectory(AotMetadataDirectory);
-
-            var hotNames = SettingsUtil.HotUpdateAssemblyNamesExcludePreserved
-                .Distinct(StringComparer.Ordinal).OrderBy(name => name, StringComparer.Ordinal).ToArray();
-            var hotSource = SettingsUtil.GetHotUpdateDllsOutputDirByTarget(context.Target);
-            foreach (var name in hotNames)
-            {
-                var error = CopyDll(hotSource, HotUpdateDirectory, name);
-                if (error != null) return BuildStepResult.Failure(error);
-            }
-
-            var request = context.GetRequired<TemplateBuildRequest>(TemplateBuildKeys.Request);
-            var aotSource = request.ContentOnly
-                ? GetBaselineDirectory(context)
-                : SettingsUtil.GetAssembliesPostIl2CppStripDir(context.Target);
-            var referenceFile = request.ContentOnly
-                ? Path.Combine(aotSource, "AOTGenericReferences.cs")
-                : Path.Combine(Application.dataPath,
-                    SettingsUtil.HybridCLRSettings.outputAOTGenericReferenceFile);
-            var aotNames = ReadAotAssemblyNames(referenceFile);
-            aotNames.Add("Aot.Runtime");
-
-            var copiedAotNames = new List<string>();
-            foreach (var name in aotNames.OrderBy(name => name, StringComparer.Ordinal))
-            {
-                var source = Path.Combine(aotSource, name + ".dll");
-                if (!File.Exists(source))
-                {
-                    Debug.LogWarning($"[HybridCLR] AOT metadata assembly not found, skipped: {source}");
-                    continue;
-                }
-                File.Copy(source, Path.Combine(AotMetadataDirectory, name + ".dll.bytes"), true);
-                copiedAotNames.Add(name);
-            }
+            var hotNames = GetCopiedAssemblyNames(HotUpdateDirectory);
+            if (hotNames.Length == 0)
+                return BuildStepResult.Failure("No copied hot-update DLLs were found.");
 
             var manifest = new HybridClrReleaseManifest
             {
                 hotUpdateAssemblies = hotNames,
-                aotMetadataAssemblies = copiedAotNames.ToArray(),
+                aotMetadataAssemblies = GetCopiedAssemblyNames(AotMetadataDirectory),
             };
             File.WriteAllText(ManifestPath, JsonUtility.ToJson(manifest, true));
             AssetDatabase.Refresh();
             return BuildStepResult.Success();
         }
 
-        public static BuildStepResult ArchiveBaseline(BuildContext context)
+        private static string[] GetCopiedAssemblyNames(string directory)
         {
-            var source = SettingsUtil.GetAssembliesPostIl2CppStripDir(context.Target);
-            if (!Directory.Exists(source))
-                return BuildStepResult.Failure($"Stripped AOT directory not found: {source}");
-
-            var destination = GetBaselineDirectory(context);
-            Directory.CreateDirectory(destination);
-            foreach (var file in Directory.GetFiles(source, "*.dll", SearchOption.TopDirectoryOnly))
-                File.Copy(file, Path.Combine(destination, Path.GetFileName(file)), true);
-
-            var referenceFile = Path.Combine(Application.dataPath,
-                SettingsUtil.HybridCLRSettings.outputAOTGenericReferenceFile);
-            if (File.Exists(referenceFile))
-                File.Copy(referenceFile, Path.Combine(destination, "AOTGenericReferences.cs"), true);
-            return BuildStepResult.Success();
-        }
-
-        private static string CopyDll(string sourceDirectory, string destinationDirectory, string name)
-        {
-            var source = Path.Combine(sourceDirectory, name + ".dll");
-            if (!File.Exists(source)) return $"Hot-update assembly not found: {source}";
-            if (new FileInfo(source).Length == 0) return $"Hot-update assembly is empty: {source}";
-            File.Copy(source, Path.Combine(destinationDirectory, name + ".dll.bytes"), true);
-            return null;
-        }
-
-        private static HashSet<string> ReadAotAssemblyNames(string path)
-        {
-            var names = new HashSet<string>(StringComparer.Ordinal);
-            if (!File.Exists(path)) return names;
-            var section = AotSection.Match(File.ReadAllText(path));
-            if (!section.Success) return names;
-            foreach (Match match in DllName.Matches(section.Groups[1].Value))
-                names.Add(Path.GetFileNameWithoutExtension(match.Groups[1].Value));
-            return names;
+            if (!Directory.Exists(directory)) return Array.Empty<string>();
+            return Directory.GetFiles(directory, "*.dll.bytes", SearchOption.TopDirectoryOnly)
+                .Select(path => Path.GetFileNameWithoutExtension(
+                    Path.GetFileNameWithoutExtension(path)))
+                .OrderBy(name => name, StringComparer.Ordinal)
+                .ToArray();
         }
     }
 }

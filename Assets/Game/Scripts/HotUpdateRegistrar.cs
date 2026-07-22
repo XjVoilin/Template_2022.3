@@ -6,6 +6,7 @@ using July.Audio;
 using July.Launch;
 using July.Config;
 using July.Fsm;
+using July.Input;
 using July.Localization;
 using July.Persistence;
 using July.Pooling;
@@ -38,7 +39,7 @@ namespace GameTemplate
             context.RegisterSystem(new NoEncryptionSystem());
             context.RegisterSystem(new LocalFileSaveSystem());
             context.RegisterSystem(new SceneSystem());
-            context.RegisterSystem(new InputSystem());
+            context.RegisterSystem(new UnityInputSystem());
             context.RegisterSystem(new FsmSystem());
             context.RegisterSystem(new TimeSystem());
             context.RegisterSystem(new LocalizationSystem());

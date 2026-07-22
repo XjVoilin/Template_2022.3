@@ -79,7 +79,7 @@ namespace GameTemplate.Editor.Build
             _settings.coreVersion = EditorGUILayout.TextField("核心版本", _settings.coreVersion);
             _settings.contentVersion = EditorGUILayout.TextField("内容版本", _settings.contentVersion);
 
-            var activePlatform = IntegrationProfileMenu.ResolveActivePlatform();
+            var activePlatform = PlatformProfileMenu.ResolveActivePlatform();
             EditorGUILayout.LabelField("当前集成宏", GetPlatformLabel(activePlatform),
                 EditorStyles.miniLabel);
 

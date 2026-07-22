@@ -8,6 +8,7 @@ Assembly-CSharp.csproj
 *.csproj
 *.sln
 BuildArtifacts
+Bundles
 HybridCLRData
 Assets/Game/Res/HotUpdateDlls/*
 Assets/Game/Res/AOTMetaDlls/*
