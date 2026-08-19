@@ -46,7 +46,6 @@ namespace GameTemplate.Aot
 
         protected override void OnDestroy()
         {
-            ArchContext.Current?.Shutdown();
             SeedServices.Clear();
             base.OnDestroy();
 
