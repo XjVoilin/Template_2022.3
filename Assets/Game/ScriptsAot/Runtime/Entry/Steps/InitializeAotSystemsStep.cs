@@ -13,22 +13,19 @@ namespace GameTemplate.Aot
     {
         private const int WeChatPlatformType = 3;
         private const int DouyinPlatformType = 4;
-        private readonly BootConfig _bootConfig;
-
-        public InitializeAotSystemsStep(BootConfig bootConfig) => _bootConfig = bootConfig;
 
         public string Name => "Initialize AOT Systems";
 
         public async UniTask<bool> ExecuteAsync(CancellationToken ct)
         {
-            SeedServices.Register(_bootConfig);
-            SeedServices.Register(string.IsNullOrWhiteSpace(_bootConfig.CdnUrl)
+            var config = SeedServices.Resolve<GameConfig>();
+            SeedServices.Register(string.IsNullOrWhiteSpace(config.CdnUrl)
                 ? CDNEndpoints.Empty
-                : new CDNEndpoints(_bootConfig.CdnUrl.TrimEnd('/')));
+                : new CDNEndpoints(config.CdnUrl.TrimEnd('/')));
 
             var context = new ArchContext();
             context.RegisterSystem(new PlatformSystem(CreatePlatformAdapter()));
-            context.RegisterSystem(new AnalyticsSystem(CreateAnalyticsChannels()));
+            context.RegisterSystem(new AnalyticsSystem(CreateAnalyticsChannels(config.Analytics)));
             await context.InitializeAsync(ct);
             return true;
         }
@@ -44,9 +41,8 @@ namespace GameTemplate.Aot
 #endif
         }
 
-        private IAnalyticsChannel[] CreateAnalyticsChannels()
+        private static IAnalyticsChannel[] CreateAnalyticsChannels(AnalyticsConfig settings)
         {
-            var settings = _bootConfig.Analytics;
             if (settings == null || !settings.Enabled)
                 return Array.Empty<IAnalyticsChannel>();
 

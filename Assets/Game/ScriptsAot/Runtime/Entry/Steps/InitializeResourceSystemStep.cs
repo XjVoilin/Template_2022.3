@@ -13,9 +13,9 @@ namespace GameTemplate.Aot
 
         public async UniTask<bool> ExecuteAsync(CancellationToken ct)
         {
-            var bootConfig = SeedServices.Resolve<BootConfig>();
+            var config = SeedServices.Resolve<GameConfig>();
             var endpoints = SeedServices.Resolve<CDNEndpoints>();
-            var options = CreateOptions(bootConfig, endpoints);
+            var options = CreateOptions(config, endpoints);
             var resourceSystem = new YooAssetResourceSystem(options);
 
             // 热更程序集会在 Arch 生命周期初始化新增系统之前加载，因此这里需要提前初始化资源系统。
@@ -24,7 +24,7 @@ namespace GameTemplate.Aot
             return true;
         }
 
-        private static YooAssetOptions CreateOptions(BootConfig config, CDNEndpoints endpoints)
+        private static YooAssetOptions CreateOptions(GameConfig config, CDNEndpoints endpoints)
         {
             var playMode = ResolvePlayMode(config.PlayMode);
             var options = new YooAssetOptions
@@ -46,16 +46,16 @@ namespace GameTemplate.Aot
             return options;
         }
 
-        private static EPlayMode ResolvePlayMode(JPlayMode playMode)
+        private static EPlayMode ResolvePlayMode(ResourcePlayMode playMode)
         {
 #if UNITY_EDITOR
             return playMode switch
             {
-                JPlayMode.EditorSimulateMode => EPlayMode.EditorSimulateMode,
-                JPlayMode.OfflinePlayMode => EPlayMode.OfflinePlayMode,
-                JPlayMode.HostPlayMode => EPlayMode.HostPlayMode,
-                JPlayMode.WebPlayMode => EPlayMode.WebPlayMode,
-                JPlayMode.CustomPlayMode => EPlayMode.CustomPlayMode,
+                ResourcePlayMode.EditorSimulateMode => EPlayMode.EditorSimulateMode,
+                ResourcePlayMode.OfflinePlayMode => EPlayMode.OfflinePlayMode,
+                ResourcePlayMode.HostPlayMode => EPlayMode.HostPlayMode,
+                ResourcePlayMode.WebPlayMode => EPlayMode.WebPlayMode,
+                ResourcePlayMode.CustomPlayMode => EPlayMode.CustomPlayMode,
                 _ => EPlayMode.EditorSimulateMode,
             };
 #elif JULYGF_WX_MINIGAME || JULYGF_DY_MINIGAME
@@ -63,9 +63,9 @@ namespace GameTemplate.Aot
 #else
             return playMode switch
             {
-                JPlayMode.HostPlayMode => EPlayMode.HostPlayMode,
-                JPlayMode.WebPlayMode => EPlayMode.WebPlayMode,
-                JPlayMode.CustomPlayMode => EPlayMode.CustomPlayMode,
+                ResourcePlayMode.HostPlayMode => EPlayMode.HostPlayMode,
+                ResourcePlayMode.WebPlayMode => EPlayMode.WebPlayMode,
+                ResourcePlayMode.CustomPlayMode => EPlayMode.CustomPlayMode,
                 _ => EPlayMode.OfflinePlayMode,
             };
 #endif

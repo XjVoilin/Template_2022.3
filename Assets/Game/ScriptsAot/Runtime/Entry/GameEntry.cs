@@ -6,8 +6,7 @@ namespace GameTemplate.Aot
 {
     public class GameEntry : JulyGameEntry
     {
-        [SerializeField] private BootConfig _bootConfig = new();
-        [SerializeField] private GameConfig _gameConfig;
+        [SerializeField] private GameConfig _gameConfig = new();
 
         protected override void ConfigurePipeline(LaunchPipeline pipeline)
         {
@@ -18,7 +17,7 @@ namespace GameTemplate.Aot
             Application.SetStackTraceLogType(LogType.Warning, StackTraceLogType.None);
 #endif
 
-            pipeline.Add(new InitializeAotSystemsStep(_bootConfig));
+            pipeline.Add(new InitializeAotSystemsStep());
             pipeline.Add(new InitializeResourceSystemStep());
             pipeline.Add(new HotUpdateStep());
             pipeline.Add(new InitializeGameSystemsStep());
