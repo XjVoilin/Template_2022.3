@@ -70,7 +70,6 @@ namespace GameTemplate.Editor.Build
                 steps.Add(request.ContentOnly
                     ? (IBuildStep)new CompileHotUpdateStep()
                     : new GenerateHybridClrStep());
-                steps.Add(new SyncHybridClrArtifactsStep());
                 if (!request.ContentOnly) steps.Add(new ArchiveAotBaselineStep());
             }
 

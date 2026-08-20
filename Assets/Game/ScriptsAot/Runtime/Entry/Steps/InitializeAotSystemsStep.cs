@@ -9,27 +9,28 @@ using July.Platform;
 
 namespace GameTemplate.Aot
 {
-    /// <summary>Project composition root for selecting framework-provided adapters.</summary>
-    public sealed class RegisterProvidersStep : ILaunchStep
+    public sealed class InitializeAotSystemsStep : ILaunchStep
     {
         private const int WeChatPlatformType = 3;
         private const int DouyinPlatformType = 4;
         private readonly BootConfig _bootConfig;
 
-        public RegisterProvidersStep(BootConfig bootConfig)
-        {
-            _bootConfig = bootConfig ?? new BootConfig();
-        }
+        public InitializeAotSystemsStep(BootConfig bootConfig) => _bootConfig = bootConfig;
 
-        public string Name => "Register Providers";
+        public string Name => "Initialize AOT Systems";
 
-        public UniTask<bool> ExecuteAsync(CancellationToken ct)
+        public async UniTask<bool> ExecuteAsync(CancellationToken ct)
         {
-            ct.ThrowIfCancellationRequested();
-            var context = ArchContext.Current;
+            SeedServices.Register(_bootConfig);
+            SeedServices.Register(string.IsNullOrWhiteSpace(_bootConfig.CdnUrl)
+                ? CDNEndpoints.Empty
+                : new CDNEndpoints(_bootConfig.CdnUrl.TrimEnd('/')));
+
+            var context = new ArchContext();
             context.RegisterSystem(new PlatformSystem(CreatePlatformAdapter()));
-            context.RegisterSystem(new AnalyticsSystem(CreateAnalyticsChannels(_bootConfig)));
-            return UniTask.FromResult(true);
+            context.RegisterSystem(new AnalyticsSystem(CreateAnalyticsChannels()));
+            await context.InitializeAsync(ct);
+            return true;
         }
 
         private static IPlatformAdapter CreatePlatformAdapter()
@@ -43,9 +44,9 @@ namespace GameTemplate.Aot
 #endif
         }
 
-        private static IAnalyticsChannel[] CreateAnalyticsChannels(BootConfig bootConfig)
+        private IAnalyticsChannel[] CreateAnalyticsChannels()
         {
-            var settings = bootConfig?.Analytics;
+            var settings = _bootConfig.Analytics;
             if (settings == null || !settings.Enabled)
                 return Array.Empty<IAnalyticsChannel>();
 

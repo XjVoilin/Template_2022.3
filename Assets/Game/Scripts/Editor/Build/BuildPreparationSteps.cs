@@ -1,6 +1,5 @@
 using System;
 using System.IO;
-using System.Linq;
 using System.Text.RegularExpressions;
 using CozyYard.Editor;
 using HybridCLR.Editor;
@@ -109,14 +108,6 @@ namespace GameTemplate.Editor.Build
         }
     }
 
-    internal sealed class SyncHybridClrArtifactsStep : IBuildStep
-    {
-        public string Name => "Sync HybridCLR Artifacts";
-        public string Validate(BuildContext context) => null;
-        public BuildStepResult Execute(BuildContext context) =>
-            HybridClrArtifactUtility.WriteManifest(context);
-    }
-
     internal sealed class ArchiveAotBaselineStep : IBuildStep
     {
         public string Name => "Archive AOT Baseline";
@@ -141,18 +132,10 @@ namespace GameTemplate.Editor.Build
         }
     }
 
-    [Serializable]
-    internal sealed class HybridClrReleaseManifest
-    {
-        public string[] hotUpdateAssemblies;
-        public string[] aotMetadataAssemblies;
-    }
-
     internal static class HybridClrArtifactUtility
     {
         private const string HotUpdateDirectory = "Assets/Game/Res/HotUpdateDlls";
         private const string AotMetadataDirectory = "Assets/Game/Res/AOTMetaDlls";
-        private const string ManifestPath = HotUpdateDirectory + "/hybridclr-manifest.json";
 
         public static HybridCLRBuildProfile CreateProfile(BuildContext context)
         {
@@ -171,32 +154,6 @@ namespace GameTemplate.Editor.Build
             var request = context.GetRequired<TemplateBuildRequest>(TemplateBuildKeys.Request);
             return HybridCLRBuildService.GetAotBackupDirectory(CreateProfile(context),
                 context.Target, context.Platform, request.CoreVersion);
-        }
-
-        public static BuildStepResult WriteManifest(BuildContext context)
-        {
-            var hotNames = GetCopiedAssemblyNames(HotUpdateDirectory);
-            if (hotNames.Length == 0)
-                return BuildStepResult.Failure("No copied hot-update DLLs were found.");
-
-            var manifest = new HybridClrReleaseManifest
-            {
-                hotUpdateAssemblies = hotNames,
-                aotMetadataAssemblies = GetCopiedAssemblyNames(AotMetadataDirectory),
-            };
-            File.WriteAllText(ManifestPath, JsonUtility.ToJson(manifest, true));
-            AssetDatabase.Refresh();
-            return BuildStepResult.Success();
-        }
-
-        private static string[] GetCopiedAssemblyNames(string directory)
-        {
-            if (!Directory.Exists(directory)) return Array.Empty<string>();
-            return Directory.GetFiles(directory, "*.dll.bytes", SearchOption.TopDirectoryOnly)
-                .Select(path => Path.GetFileNameWithoutExtension(
-                    Path.GetFileNameWithoutExtension(path)))
-                .OrderBy(name => name, StringComparer.Ordinal)
-                .ToArray();
         }
     }
 }

@@ -1,7 +1,6 @@
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using July.Launch;
-using July.Logging;
 
 namespace GameTemplate.Aot
 {
