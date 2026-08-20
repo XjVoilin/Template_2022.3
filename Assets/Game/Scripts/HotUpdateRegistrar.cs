@@ -1,4 +1,7 @@
+using System;
+using System.Collections.Generic;
 using System.Threading;
+using cfg;
 using Cysharp.Threading.Tasks;
 using GameTemplate.Aot;
 using July.Arch;
@@ -8,12 +11,15 @@ using July.Config;
 using July.Fsm;
 using July.Input;
 using July.Localization;
+using July.Logging;
 using July.Persistence;
 using July.Pooling;
 using July.Resource;
 using July.Scene;
 using July.Time;
 using July.UI;
+using SimpleJSON;
+using UnityEngine;
 
 namespace GameTemplate
 {
@@ -47,10 +53,53 @@ namespace GameTemplate
 
         public async UniTask PreInitializeAsync(CancellationToken ct = default)
         {
-            var tables = await LubanTableLoader.LoadAsync(this.GetSystem<IResourceSystem>(), ct);
-            var configSystem = this.GetSystem<IConfigSystem>();
-            configSystem.SetMainProvider(new DictionaryConfigProvider(tables));
-            this.GetSystem<ILocalizationSystem>().SetMainProvider(new LubanLocalizationProvider(configSystem));
+            await LoadLubanTablesAsync(ct);
+            SetupLocalization();
+        }
+        
+        private void SetupLocalization()
+        {
+            var config = this.GetSystem<IConfigSystem>();
+            this.GetSystem<ILocalizationSystem>().SetMainProvider(new LubanLocalizationProvider(config));
+        }
+        
+        private async UniTask LoadLubanTablesAsync(CancellationToken ct)
+        {
+            var resource = this.GetSystem<IResourceSystem>();
+            var names = Tables.TableNames;
+            var jsonCache = new Dictionary<string, string>(names.Length);
+            var tasks = new UniTask<(string name, string json)>[names.Length];
+
+            for (var i = 0; i < names.Length; i++)
+            {
+                var name = names[i];
+                tasks[i] = LoadSingleJsonAsync(resource, name);
+            }
+
+            var results = await UniTask.WhenAll(tasks);
+            foreach (var (name, json) in results)
+                jsonCache[name] = json;
+
+            var tables = new Tables(name => jsonCache.TryGetValue(name, out var json)
+                ? JSON.Parse(json)
+                : throw new Exception($"配置未找到: {name}"));
+
+            var tableDict = new Dictionary<Type, object>();
+            tableDict[typeof(Tables)] = tables;
+            tables.RegisterTo(tableDict);
+
+            this.GetSystem<IConfigSystem>().SetMainProvider(new DictionaryConfigProvider(tableDict));
+
+            JLogger.Log($"[HotUpdateRegistrar] Luban 配置表加载完成，共 {names.Length} 张表");
+        }
+
+        private static async UniTask<(string name, string json)> LoadSingleJsonAsync(
+            IResourceSystem resource, string name)
+        {
+            using var handle = await resource.LoadAssetAsync<TextAsset>(name);
+            if (handle?.Asset == null)
+                throw new Exception($"配置文件未找到: {name}");
+            return (name, handle.Asset.text);
         }
 
         public async UniTask OnGameLaunch()

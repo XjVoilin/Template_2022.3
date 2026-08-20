@@ -1,11 +1,10 @@
-using cfg;
 using July.Arch;
 using July.Config;
 using July.UI;
-
+using cfg;
 namespace GameTemplate
 {
-    public sealed class LubanUIWindowProvider : IUIWindowProvider
+    public class LubanUIWindowProvider : IUIWindowProvider
     {
         public bool TryResolve(int windowId, out UIOpenOptions options)
         {
