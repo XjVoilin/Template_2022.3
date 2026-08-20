@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Threading;
 using cfg;
 using Cysharp.Threading.Tasks;
-using GameTemplate.Aot;
+using Game.Aot;
 using July.Arch;
 using July.Audio;
 using July.Launch;
@@ -21,7 +21,7 @@ using July.UI;
 using SimpleJSON;
 using UnityEngine;
 
-namespace GameTemplate
+namespace Game
 {
     public sealed class HotUpdateRegistrar : IHotUpdateRegistrar, ICanGetSystem
     {

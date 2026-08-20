@@ -151,7 +151,34 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 577695ec8c0446ac9108be0576802d9a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  frameworkConfig: {fileID: 11400000, guid: a76bd4741c2a544d9afdef04b1456724, type: 2}
+  _gameConfig:
+    PlayMode: 0
+    CdnUrl: 
+    Analytics:
+      Enabled: 0
+      AppId: 
+      ServerUrl: 
+      DebugMode: 1
+      UploadUnityErrors: 1
+    UI:
+      DesignResolution: {x: 1080, y: 1920}
+      ScreenMatchMode: 0
+      UICameraDepth: 10
+      CameraOrthographicSize: 9.6
+      CameraNearClip: 0.3
+      PlaneDistance: 100
+      MaskAlpha: 0.97
+    Audio:
+      DefaultClickSfx: CommonBtnClick
+    Tip:
+      TipPrefabPath: UITipItem
+      PoolMaxSize: 10
+      DefaultDuration: 2
+      FadeOutDuration: 0.3
+      Spacing: 10
+      MoveUpDuration: 0.2
+      EnterOffset: 50
+      EnterDuration: 0.2
 --- !u!4 &1152170808
 Transform:
   m_ObjectHideFlags: 0

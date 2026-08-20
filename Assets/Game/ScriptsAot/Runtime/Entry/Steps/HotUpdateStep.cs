@@ -13,7 +13,7 @@ using YooAsset;
 using HybridCLR;
 #endif
 
-namespace GameTemplate.Aot
+namespace Game.Aot
 {
     /// <summary>
     /// 按 YooAsset 标签下载并加载 HybridCLR 的 AOT 元数据与热更程序集。

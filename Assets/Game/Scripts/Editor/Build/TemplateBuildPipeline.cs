@@ -6,7 +6,7 @@ using UnityEditor;
 using UnityEditor.Build;
 using UnityEngine;
 
-namespace GameTemplate.Editor.Build
+namespace Game.Editor.Build
 {
     public static class TemplateBuildPipeline
     {

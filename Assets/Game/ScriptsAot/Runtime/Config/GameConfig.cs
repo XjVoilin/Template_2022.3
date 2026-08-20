@@ -3,7 +3,7 @@ using UnityEngine;
 using July.Audio;
 using July.UI;
 
-namespace GameTemplate.Aot
+namespace Game.Aot
 {
     public enum ResourcePlayMode
     {

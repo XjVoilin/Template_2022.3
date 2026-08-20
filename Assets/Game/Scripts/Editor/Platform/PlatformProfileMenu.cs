@@ -6,7 +6,7 @@ using System.Text.RegularExpressions;
 using UnityEditor;
 using UnityEngine;
 
-namespace GameTemplate.Editor
+namespace Game.Editor
 {
     public static class PlatformProfileMenu
     {

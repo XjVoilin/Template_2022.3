@@ -2,7 +2,7 @@ using System;
 using UnityEditor;
 using UnityEngine;
 
-namespace GameTemplate.Editor.Build
+namespace Game.Editor.Build
 {
     public sealed class TemplateBuildWindow : EditorWindow
     {

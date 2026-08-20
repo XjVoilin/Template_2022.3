@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using July.Logging;
 
-namespace GameTemplate.Aot
+namespace Game.Aot
 {
     /// <summary>Startup-only value registry for the seed project's composition root.</summary>
     public static class SeedServices

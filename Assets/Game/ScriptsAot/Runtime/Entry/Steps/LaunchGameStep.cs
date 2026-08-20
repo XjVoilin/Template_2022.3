@@ -2,7 +2,7 @@ using System.Threading;
 using Cysharp.Threading.Tasks;
 using July.Launch;
 
-namespace GameTemplate.Aot
+namespace Game.Aot
 {
     public sealed class LaunchGameStep : ILaunchStep
     {

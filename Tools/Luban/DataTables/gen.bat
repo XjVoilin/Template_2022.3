@@ -6,7 +6,7 @@ set LUBAN_DLL=%WORKSPACE%\Luban\Luban.dll
 set CONF_ROOT=.
 
 set OUTJSON_DIR=%ASSETPATH%/Game/Res/Configs
-set OUTCODE_DIR=%ASSETPATH%/Game/Scripts/Generated/Configs
+set OUTCODE_DIR=%ASSETPATH%/Game/Scripts/Runtime/Generated/Configs
 
 dotnet %LUBAN_DLL% ^
     -t all ^

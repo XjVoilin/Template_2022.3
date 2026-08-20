@@ -7,7 +7,7 @@ using July.Launch;
 using July.Logging;
 using July.Platform;
 
-namespace GameTemplate.Aot
+namespace Game.Aot
 {
     public sealed class InitializeAotSystemsStep : ILaunchStep
     {

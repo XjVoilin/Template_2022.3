@@ -1,4 +1,4 @@
-namespace GameTemplate.Aot
+namespace Game.Aot
 {
     public readonly struct CDNEndpoints
     {

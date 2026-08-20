@@ -1,7 +1,7 @@
 using UnityEditor;
 using UnityEngine;
 
-namespace GameTemplate.Editor
+namespace Game.Editor
 {
     /// <summary>
     /// Collider2D 统一缩放工具。

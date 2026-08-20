@@ -5,12 +5,12 @@ using Cysharp.Threading.Tasks;
 using July.Arch;
 using July.Launch;
 
-namespace GameTemplate.Aot
+namespace Game.Aot
 {
     public sealed class InitializeGameSystemsStep : ILaunchStep
     {
-        private const string AssemblyName = "Assembly-CSharp";
-        private const string RegistrarTypeName = "GameTemplate.HotUpdateRegistrar";
+        private const string AssemblyName = "Game.Runtime";
+        private const string RegistrarTypeName = "Game.HotUpdateRegistrar";
 
         public string Name => "Initialize Game Systems";
 

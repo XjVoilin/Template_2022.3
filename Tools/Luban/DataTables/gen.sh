@@ -5,7 +5,7 @@ WORKSPACE=..
 LUBAN_DLL=$WORKSPACE/Luban/Luban.dll
 CONF_ROOT=.
 OUTJSON_DIR=$ASSETPATH/Game/Res/Configs
-OUTCODE_DIR=$ASSETPATH/Game/Scripts/Generated/Configs
+OUTCODE_DIR=$ASSETPATH/Game/Scripts/Runtime/Generated/Configs
 
 
 

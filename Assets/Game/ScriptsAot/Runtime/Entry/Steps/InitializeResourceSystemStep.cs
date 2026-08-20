@@ -5,7 +5,7 @@ using July.Launch;
 using July.Resource.YooAsset;
 using YooAsset;
 
-namespace GameTemplate.Aot
+namespace Game.Aot
 {
     public sealed class InitializeResourceSystemStep : ILaunchStep
     {

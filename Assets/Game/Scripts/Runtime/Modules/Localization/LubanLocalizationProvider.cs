@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using cfg;
 
-namespace GameTemplate
+namespace Game
 {
     /// <summary>
     /// 盒子的多语言数据源：从 Luban TbLanguage 展开。

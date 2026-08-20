@@ -2,7 +2,7 @@ using July.Arch;
 using July.Config;
 using July.UI;
 using cfg;
-namespace GameTemplate
+namespace Game
 {
     public class LubanUIWindowProvider : IUIWindowProvider
     {

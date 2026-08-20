@@ -2,7 +2,7 @@ using July.Arch;
 using July.Launch;
 using UnityEngine;
 
-namespace GameTemplate.Aot
+namespace Game.Aot
 {
     public class GameEntry : JulyGameEntry
     {

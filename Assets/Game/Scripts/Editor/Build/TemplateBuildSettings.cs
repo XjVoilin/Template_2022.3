@@ -2,7 +2,7 @@ using System;
 using System.IO;
 using UnityEngine;
 
-namespace GameTemplate.Editor.Build
+namespace Game.Editor.Build
 {
     [Serializable]
     public sealed class TemplateBuildSettings

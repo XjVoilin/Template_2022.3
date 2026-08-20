@@ -8,7 +8,7 @@ using July.Build;
 using UnityEditor;
 using UnityEngine;
 
-namespace GameTemplate.Editor.Build
+namespace Game.Editor.Build
 {
     internal sealed class BuildPreflightStep : IBuildStep
     {

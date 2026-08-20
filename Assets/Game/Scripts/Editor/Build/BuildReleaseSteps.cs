@@ -13,7 +13,7 @@ using YooAsset.Editor;
 using Debug = UnityEngine.Debug;
 using BuildContext = July.Build.BuildContext;
 
-namespace GameTemplate.Editor.Build
+namespace Game.Editor.Build
 {
     internal static class BuildArtifactPaths
     {

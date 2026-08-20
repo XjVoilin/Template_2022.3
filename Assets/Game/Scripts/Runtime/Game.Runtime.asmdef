@@ -1,0 +1,32 @@
+{
+  "name": "Game.Runtime",
+  "rootNamespace": "Game",
+  "references": [
+    "Aot.Runtime",
+    "Luban.Runtime",
+    "UniTask",
+    "July.Arch",
+    "July.Audio",
+    "July.Config",
+    "July.Fsm",
+    "July.Input",
+    "July.Launch",
+    "July.Localization",
+    "July.Logging",
+    "July.Persistence",
+    "July.Pooling",
+    "July.Resource",
+    "July.Scene",
+    "July.Time",
+    "July.UI"
+  ],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": true,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": false
+}

@@ -24,7 +24,7 @@ namespace CozyYard.Editor
     ///
     /// 输出：
     ///   Assets/Game/Res/Configs/              — JSON 数据（扁平模式或各模块统一输出）
-    ///   Assets/Game/Scripts/Generated/Configs/ — C# 代码 + TablesExt.cs
+    ///   Assets/Game/Scripts/Runtime/Generated/Configs/ — C# 代码 + TablesExt.cs
     /// </summary>
     public class LubanGeneratorWindow : EditorWindow
     {
@@ -208,7 +208,7 @@ namespace CozyYard.Editor
         private static bool GenerateWithConf(string confPath)
         {
             const string jsonOut = "Assets/Game/Res/Configs";
-            const string codeOut = "Assets/Game/Scripts/Generated/Configs";
+            const string codeOut = "Assets/Game/Scripts/Runtime/Generated/Configs";
             const string topModule = "cfg";
 
             var success = RunLuban(confPath, jsonOut, codeOut, useConfDirectly: true);
@@ -287,7 +287,7 @@ namespace CozyYard.Editor
         private static bool GenerateFlat()
         {
             const string jsonOut = "Assets/Game/Res/Configs";
-            const string codeOut = "Assets/Game/Scripts/Generated/Configs";
+            const string codeOut = "Assets/Game/Scripts/Runtime/Generated/Configs";
             const string topModule = "cfg";
 
             var schemaFiles = BuildSchemaFilesFlat();
@@ -308,7 +308,7 @@ namespace CozyYard.Editor
         private static bool GenerateModule(string module)
         {
             const string jsonOut = "Assets/Game/Res/Configs";
-            const string codeOut = "Assets/Game/Scripts/Generated/Configs";
+            const string codeOut = "Assets/Game/Scripts/Runtime/Generated/Configs";
             const string topModule = "cfg";
             var dataDir = $"{DatasDir}/{module}";
 
