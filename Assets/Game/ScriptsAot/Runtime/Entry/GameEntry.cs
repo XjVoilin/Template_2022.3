@@ -17,6 +17,7 @@ namespace Game.Aot
             Application.SetStackTraceLogType(LogType.Warning, StackTraceLogType.None);
 #endif
 
+            pipeline.Add(new PresentLaunchFrameStep());
             pipeline.Add(new InitializeAotSystemsStep());
             pipeline.Add(new InitializeResourceSystemStep());
             pipeline.Add(new HotUpdateStep());
