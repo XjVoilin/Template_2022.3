@@ -1,0 +1,19 @@
+{
+  "name": "Game.Template.Tests",
+  "references": [
+    "Aot.Runtime",
+    "July.Arch",
+    "July.Networking",
+    "July.Persistence",
+    "July.Bootstrap",
+    "July.Release.Runtime",
+    "July.Release.Editor",
+    "Unity.TextMeshPro",
+    "UnityEngine.UI",
+    "UniTask",
+    "YooAsset.Editor"
+  ],
+  "includePlatforms": ["Editor"],
+  "optionalUnityReferences": ["TestAssemblies"],
+  "autoReferenced": false
+}

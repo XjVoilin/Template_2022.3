@@ -53,6 +53,13 @@ namespace CozyYard.Editor
         [MenuItem("JulyGF/配置表/生成全部", priority = 11)]
         public static void MenuGenerateAll() => GenerateAll();
 
+        /// <summary>CI 独立生成入口；失败必须中止后续构建。</summary>
+        public static void GenerateAllForCI()
+        {
+            if (!GenerateAll())
+                throw new InvalidOperationException("Luban 配置表生成失败，停止构建。");
+        }
+
         private void OnEnable() => RefreshModules();
 
         private void RefreshModules()

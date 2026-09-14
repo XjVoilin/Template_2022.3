@@ -5,6 +5,7 @@ using cfg;
 using Cysharp.Threading.Tasks;
 using Game.Aot;
 using July.Arch;
+using July.Bootstrap;
 using July.Audio;
 using July.Launch;
 using July.Config;
@@ -12,6 +13,7 @@ using July.Fsm;
 using July.Input;
 using July.Localization;
 using July.Logging;
+using July.Networking;
 using July.Persistence;
 using July.Pooling;
 using July.Resource;
@@ -28,7 +30,8 @@ namespace Game
         public void Register()
         {
             var context = ArchContext.Current;
-            var gameConfig = SeedServices.Resolve<GameConfig>();
+            var launch = context.GetStore<LaunchStore>();
+            var gameConfig = launch.GetProjectConfig<GameConfig>();
             context.RegisterSystem(new PoolSystem());
 
             var uiSystem = new UISystem();
@@ -43,12 +46,25 @@ namespace Game
             context.RegisterSystem(new ConfigSystem());
             context.RegisterSystem(new JsonSerializeSystem());
             context.RegisterSystem(new NoEncryptionSystem());
-            context.RegisterSystem(new LocalFileSaveSystem());
+            context.RegisterSystem(new PlatformPreferencesSaveSystem());
             context.RegisterSystem(new SceneSystem());
             context.RegisterSystem(new UnityInputSystem());
             context.RegisterSystem(new FsmSystem());
             context.RegisterSystem(new TimeSystem());
             context.RegisterSystem(new LocalizationSystem());
+
+            context.RegisterStore(new HttpPendingQueueStore());
+            var http = new HttpSystem();
+            context.RegisterSystem(http);
+            http.Configure(new HttpModuleOptions
+            {
+                BaseUrl = launch.Current.ServerUrl,
+                TimeoutSeconds = gameConfig.Http.TimeoutSeconds,
+                MaxRetryCount = gameConfig.Http.MaxRetryCount,
+                RetryBaseDelayMs = gameConfig.Http.RetryBaseDelayMs,
+                RetryBackoffMultiplier = gameConfig.Http.RetryBackoffMultiplier,
+                RetryMaxDelayMs = gameConfig.Http.RetryMaxDelayMs,
+            }, null); // 具体项目接入自己的业务响应处理器与登录响应码。
         }
 
         public async UniTask PreInitializeAsync(CancellationToken ct = default)
@@ -73,7 +89,7 @@ namespace Game
             for (var i = 0; i < names.Length; i++)
             {
                 var name = names[i];
-                tasks[i] = LoadSingleJsonAsync(resource, name);
+                tasks[i] = LoadSingleJsonAsync(resource, name, ct);
             }
 
             var results = await UniTask.WhenAll(tasks);
@@ -94,18 +110,18 @@ namespace Game
         }
 
         private static async UniTask<(string name, string json)> LoadSingleJsonAsync(
-            IResourceSystem resource, string name)
+            IResourceSystem resource, string name, CancellationToken ct)
         {
-            using var handle = await resource.LoadAssetAsync<TextAsset>(name);
+            using var handle = await resource.LoadAssetAsync<TextAsset>(name, ct: ct);
             if (handle?.Asset == null)
                 throw new Exception($"配置文件未找到: {name}");
             return (name, handle.Asset.text);
         }
 
-        public async UniTask OnGameLaunch()
+        public async UniTask OnGameLaunch(CancellationToken ct = default)
         {
             this.GetSystem<IUISystem>().SetMainProvider(new LubanUIWindowProvider());
-            await this.GetSystem<ISceneSystem>().SwitchSceneAsync("Main");
+            await this.GetSystem<ISceneSystem>().SwitchSceneAsync("Main", ct);
         }
     }
 }

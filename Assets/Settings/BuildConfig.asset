@@ -1,0 +1,42 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5505edcc8d53a7045921de9bb7972dba, type: 3}
+  m_Name: BuildConfig
+  m_EditorClassIdentifier:
+  cloudUrl:
+  planVersion: 0.1.0
+  bootConfig: {fileID: 11400000, guid: 955463accf654580a2e3c16a66bf532d, type: 2}
+  baseDefines:
+  - UNITASK_DOTWEEN_SUPPORT
+  - DOTWEEN
+  - UNITY_YOOASSET
+  - JULYGF_ENABLE_LOG
+  - JULYGF_YOOASSET_MINIGAME
+  collectorSettings: {fileID: 11400000, guid: 64cf7f602af1e4e4f8ae2cd8ce820a71, type: 2}
+  resources:
+    PackageName: DefaultPackage
+    StartupDownloadTags: []
+  aot:
+    sourceDirectory: Assets/Game/ScriptsAot
+    AdditionalAotMetadataAssemblies: []
+    hashExclusions:
+    - HybridCLR
+  sharedBundles:
+    enabled: 0
+    mergeDepth: 4
+    fontDirectory:
+    fontMergeDepth: 5
+  launchFont: {fileID: 0}
+  splashImage: {fileID: 0}
+  disableUnitySplash: 1
+  maxPreloadCount: 10
+  maxPreloadBytes: 8388608

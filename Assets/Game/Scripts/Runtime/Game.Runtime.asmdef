@@ -13,12 +13,14 @@
     "July.Launch",
     "July.Localization",
     "July.Logging",
+    "July.Networking",
     "July.Persistence",
     "July.Pooling",
     "July.Resource",
     "July.Scene",
     "July.Time",
-    "July.UI"
+    "July.UI",
+    "July.Bootstrap"
   ],
   "includePlatforms": [],
   "excludePlatforms": [],

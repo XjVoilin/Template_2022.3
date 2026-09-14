@@ -13,3 +13,8 @@ HybridCLRData
 Assets/Game/Res/HotUpdateDlls/*
 Assets/Game/Res/AOTMetaDlls/*
 Assets/StreamingAssets
+
+# 本机发布配置与产物
+CDN/
+Tools/coscli/.cos.yaml
+coscli_output/

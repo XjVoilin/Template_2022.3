@@ -15,7 +15,7 @@ namespace CozyYard.Editor
             EditorUtility.RevealInFinder(path);
         }
 
-        [MenuItem("JulyGF/存档/打开存档目录")]
+        [MenuItem("JulyGF/存档/打开旧版文件存档目录")]
         private static void OpenSaveDataPath()
         {
             var path = Path.Combine(Application.persistentDataPath, "Save");
@@ -28,17 +28,13 @@ namespace CozyYard.Editor
         private static void DeleteAllSaveData()
         {
             var path = Path.Combine(Application.persistentDataPath, "Save");
-            if (!Directory.Exists(path))
-            {
-                Debug.Log("[SaveDataTools] 存档目录不存在，无需清除");
-                return;
-            }
-
-            if (!EditorUtility.DisplayDialog("清除存档", "确定要删除所有本地存档数据吗？此操作不可撤销。", "确定", "取消"))
+            if (!EditorUtility.DisplayDialog("清除存档", "确定要清除当前项目的全部 PlayerPrefs（含存档和偏好设置）及旧版文件存档吗？此操作不可撤销。", "确定", "取消"))
                 return;
 
-            Directory.Delete(path, true);
-            Debug.Log($"[SaveDataTools] 已清除存档目录: {path}");
+            PlayerPrefs.DeleteAll();
+            PlayerPrefs.Save();
+            if (Directory.Exists(path)) Directory.Delete(path, true);
+            Debug.Log("[SaveDataTools] 已清除当前项目的 PlayerPrefs 与旧版文件存档。");
         }
     }
 }

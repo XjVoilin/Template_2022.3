@@ -1,40 +1,32 @@
+using System;
+using July.Bootstrap;
 using July.Arch;
 using July.Launch;
 using UnityEngine;
 
 namespace Game.Aot
 {
-    public class GameEntry : JulyGameEntry
+    public class GameEntry : BootstrapGameEntry
     {
-        [SerializeField] private GameConfig _gameConfig = new();
+        [SerializeField] private GameConfig _gameConfig;
+        [SerializeField] private LaunchView _launchView;
 
         protected override void ConfigurePipeline(LaunchPipeline pipeline)
         {
-            SeedServices.Register(_gameConfig);
-
+            if (_launchView == null) throw new InvalidOperationException("GameEntry 未指定启动画面。");
+            ArchContext.Current.RegisterStore(new LaunchStore(_gameConfig));
 #if !JULYGF_DEBUG
             Application.SetStackTraceLogType(LogType.Log, StackTraceLogType.None);
             Application.SetStackTraceLogType(LogType.Warning, StackTraceLogType.None);
 #endif
-
-            pipeline.Add(new PresentLaunchFrameStep());
-            pipeline.Add(new InitializeAotSystemsStep());
-            pipeline.Add(new InitializeResourceSystemStep());
-            pipeline.Add(new HotUpdateStep());
-            pipeline.Add(new InitializeGameSystemsStep());
-            pipeline.Add(new LaunchGameStep());
+            Bootstrap.Configure(pipeline, _gameConfig.Bootstrap, _launchView,
+                AOTGenericReferences.PatchedAOTAssemblyList);
         }
 
-        private void Update()
+        protected override void OnShutdown()
         {
-            if (!IsInitialized) return;
-            ArchContext.Current.Update(Time.deltaTime);
-        }
-
-        protected override void OnDestroy()
-        {
-            SeedServices.Clear();
-            base.OnDestroy();
+            base.OnShutdown();
+            if (_launchView != null) Destroy(_launchView.gameObject);
         }
     }
 }

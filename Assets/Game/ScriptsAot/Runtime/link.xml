@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<linker>
+  <!-- 放在项目 Assets 下，确保构建读取这些声明；不能只依赖 UPM 包内的 link.xml。 -->
+  <!-- 这些组件可能仅由远端资源包中的预制体引用。 -->
+  <assembly fullname="July.Animation" preserve="all" />
+  <assembly fullname="July.Animation.Spine" preserve="all" />
+  <assembly fullname="July.UI" preserve="all" />
+  <!-- 小游戏文件系统根据平台通过反射创建，需保留类型及构造函数。 -->
+  <assembly fullname="YooAsset.MiniGame" preserve="all" />
+  <!-- 保留资源包场景和模型可能独立使用的引擎组件。 -->
+  <assembly fullname="UnityEngine.AudioModule">
+    <type fullname="UnityEngine.AudioListener" preserve="all" />
+  </assembly>
+  <assembly fullname="UnityEngine.CoreModule">
+    <type fullname="UnityEngine.SkinnedMeshRenderer" preserve="all" />
+  </assembly>
+  <!-- 保留热更程序集可能引用的调试特性及对应枚举。 -->
+  <assembly fullname="mscorlib">
+    <type fullname="System.Diagnostics.DebuggerBrowsableAttribute" preserve="all" />
+    <type fullname="System.Diagnostics.DebuggerBrowsableState" preserve="all" />
+  </assembly>
+</linker>

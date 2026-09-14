@@ -35,24 +35,24 @@
       "hash": "55e55403cf38ae02f6365159c5ebd91b1f01616b"
     },
     "com.july.analytics.thinkingdata": {
-      "version": "https://github.com/XjVoilin/JulyFramework.git?path=/Packages/com.july.analytics.thinkingdata#com.july.analytics.thinkingdata@0.1.1",
+      "version": "https://github.com/XjVoilin/JulyFramework.git?path=/Packages/com.july.analytics.thinkingdata#com.july.analytics.thinkingdata@0.1.2",
       "depth": 0,
       "source": "git",
       "dependencies": {
         "com.july.analytics": "0.3.0",
         "com.unity.ugui": "1.0.0"
       },
-      "hash": "25a84d9eb7d50723e80e982d08f743bff9a3cde9"
+      "hash": "e750d7917b9ed40f7722d950db50f9fe1d867c6b"
     },
     "com.july.animation": {
-      "version": "https://github.com/XjVoilin/JulyFramework.git?path=/Packages/com.july.animation#com.july.animation@0.2.3",
+      "version": "https://github.com/XjVoilin/JulyFramework.git?path=/Packages/com.july.animation#com.july.animation@0.2.6",
       "depth": 0,
       "source": "git",
       "dependencies": {
         "com.unity.ugui": "1.0.0",
         "com.demigiant.dotween": "1.2.632"
       },
-      "hash": "b008428c0b9abc419d61179386fcea3cd1392855"
+      "hash": "81a81075deaed72dcb3c805541856080ebb881e9"
     },
     "com.july.animation.spine": {
       "version": "https://github.com/XjVoilin/JulyFramework.git?path=/Packages/com.july.animation.spine#v0.4.1",
@@ -65,7 +65,7 @@
       "hash": "55e55403cf38ae02f6365159c5ebd91b1f01616b"
     },
     "com.july.arch": {
-      "version": "https://github.com/XjVoilin/JulyFramework.git?path=/Packages/com.july.arch#v0.5.0",
+      "version": "https://github.com/XjVoilin/JulyFramework.git?path=/Packages/com.july.arch#com.july.arch@0.1.3",
       "depth": 0,
       "source": "git",
       "dependencies": {
@@ -73,7 +73,7 @@
         "com.cysharp.unitask": "2.5.10",
         "com.july.events": "0.1.0"
       },
-      "hash": "46ae6bfcb7de946066cd6ed8a17704cad601dad8"
+      "hash": "6a56d11eec32c1970b03c5e543c1edd6ea584b48"
     },
     "com.july.audio": {
       "version": "https://github.com/XjVoilin/JulyFramework.git?path=/Packages/com.july.audio#v0.4.1",
@@ -95,17 +95,17 @@
       "hash": "55e55403cf38ae02f6365159c5ebd91b1f01616b"
     },
     "com.july.build.hybridclr": {
-      "version": "https://github.com/XjVoilin/JulyFramework.git?path=/Packages/com.july.build.hybridclr#v0.4.1",
+      "version": "https://github.com/XjVoilin/JulyFramework.git?path=/Packages/com.july.build.hybridclr#com.july.build.hybridclr@0.1.1",
       "depth": 0,
       "source": "git",
       "dependencies": {
         "com.july.build": "0.3.0",
         "com.code-philosophy.hybridclr": "8.7.0"
       },
-      "hash": "55e55403cf38ae02f6365159c5ebd91b1f01616b"
+      "hash": "ea359bb524d2bd0278a22eef82a7bf31d47ef33d"
     },
     "com.july.config": {
-      "version": "https://github.com/XjVoilin/JulyFramework.git?path=/Packages/com.july.config#v0.4.1",
+      "version": "https://github.com/XjVoilin/JulyFramework.git?path=/Packages/com.july.config#com.july.config@0.2.1",
       "depth": 0,
       "source": "git",
       "dependencies": {
@@ -114,10 +114,10 @@
         "com.cysharp.unitask": "2.5.10",
         "com.unity.modules.unitywebrequest": "1.0.0"
       },
-      "hash": "55e55403cf38ae02f6365159c5ebd91b1f01616b"
+      "hash": "1e884e3549d5646bbdcd39e9267e357bb14c8838"
     },
     "com.july.diagnostics": {
-      "version": "https://github.com/XjVoilin/JulyFramework.git?path=/Packages/com.july.diagnostics#v0.4.1",
+      "version": "https://github.com/XjVoilin/JulyFramework.git?path=/Packages/com.july.diagnostics#com.july.diagnostics@0.1.2",
       "depth": 0,
       "source": "git",
       "dependencies": {
@@ -127,7 +127,7 @@
         "com.cysharp.unitask": "2.5.10",
         "com.unity.textmeshpro": "3.0.9"
       },
-      "hash": "55e55403cf38ae02f6365159c5ebd91b1f01616b"
+      "hash": "42a783375883b5f3630717f49d69e2ca195749f9"
     },
     "com.july.events": {
       "version": "https://github.com/XjVoilin/JulyFramework.git?path=/Packages/com.july.events#v0.4.1",
@@ -164,14 +164,14 @@
       "hash": "881d0afdf65e02d79c8770e845c3dabc7fe6a326"
     },
     "com.july.launch": {
-      "version": "https://github.com/XjVoilin/JulyFramework.git?path=/Packages/com.july.launch#v0.4.1",
+      "version": "https://github.com/XjVoilin/JulyFramework.git?path=/Packages/com.july.launch#com.july.launch@0.2.0",
       "depth": 0,
       "source": "git",
       "dependencies": {
         "com.cysharp.unitask": "2.5.10",
         "com.july.logging": "0.1.0"
       },
-      "hash": "55e55403cf38ae02f6365159c5ebd91b1f01616b"
+      "hash": "0d1f373cd99ecf06ae5e1d059d5131282cf91636"
     },
     "com.july.localization": {
       "version": "https://github.com/XjVoilin/JulyFramework.git?path=/Packages/com.july.localization#com.july.localization@0.1.2",
@@ -206,7 +206,7 @@
       "hash": "881d0afdf65e02d79c8770e845c3dabc7fe6a326"
     },
     "com.july.platform": {
-      "version": "https://github.com/XjVoilin/JulyFramework.git?path=/Packages/com.july.platform#com.july.platform@0.3.4",
+      "version": "https://github.com/XjVoilin/JulyFramework.git?path=/Packages/com.july.platform#com.july.platform@0.4.1",
       "depth": 0,
       "source": "git",
       "dependencies": {
@@ -214,7 +214,7 @@
         "com.cysharp.unitask": "2.5.10",
         "com.unity.ugui": "1.0.0"
       },
-      "hash": "d07a0ad5bda92003c273c82ed291437f62f28d4d"
+      "hash": "d3b1bae6476ff130d3317e31989b27dc59187b32"
     },
     "com.july.pooling": {
       "version": "https://github.com/XjVoilin/JulyFramework.git?path=/Packages/com.july.pooling#v0.4.1",
@@ -241,7 +241,7 @@
       "hash": "46ae6bfcb7de946066cd6ed8a17704cad601dad8"
     },
     "com.july.resource": {
-      "version": "https://github.com/XjVoilin/JulyFramework.git?path=/Packages/com.july.resource#v0.4.1",
+      "version": "https://github.com/XjVoilin/JulyFramework.git?path=/Packages/com.july.resource#com.july.resource@0.1.1",
       "depth": 0,
       "source": "git",
       "dependencies": {
@@ -249,7 +249,7 @@
         "com.july.arch": "0.1.0",
         "com.cysharp.unitask": "2.5.10"
       },
-      "hash": "55e55403cf38ae02f6365159c5ebd91b1f01616b"
+      "hash": "6518c3f6b5b25c48d80f83428e20d353a547a22e"
     },
     "com.july.resource.yooasset": {
       "version": "https://github.com/XjVoilin/JulyFramework.git?path=/Packages/com.july.resource.yooasset#com.july.resource.yooasset@0.2.3",
@@ -299,7 +299,7 @@
       "hash": "88f2450144fbddccf1dbe9f5e8d90f277b49a04f"
     },
     "com.july.ui": {
-      "version": "https://github.com/XjVoilin/JulyFramework.git?path=/Packages/com.july.ui#com.july.ui@0.2.19",
+      "version": "https://github.com/XjVoilin/JulyFramework.git?path=/Packages/com.july.ui#com.july.ui@0.2.26",
       "depth": 0,
       "source": "git",
       "dependencies": {
@@ -316,7 +316,7 @@
         "com.unity.modules.unitywebrequest": "1.0.0",
         "com.unity.modules.unitywebrequesttexture": "1.0.0"
       },
-      "hash": "853a64a7cfefabd03480c7291e2bf3c80343708c"
+      "hash": "6e5faade4802fd0ef3b324797e3b8e757840d7de"
     },
     "com.july.ui.authoring": {
       "version": "https://github.com/XjVoilin/JulyFramework.git?path=/Packages/com.july.ui.authoring#com.july.ui.authoring@0.1.2",
@@ -726,6 +726,61 @@
         "com.unity.modules.unitywebrequest": "1.0.0",
         "com.unity.modules.imageconversion": "1.0.0"
       }
+    },
+    "com.july.bootstrap": {
+      "version": "https://github.com/XjVoilin/JulyFramework.git?path=/Packages/com.july.bootstrap#com.july.bootstrap@0.3.0",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {
+        "com.july.arch": "0.1.3",
+        "com.july.launch": "0.2.0",
+        "com.july.config": "0.2.1",
+        "com.july.logging": "0.1.0",
+        "com.july.platform": "0.4.0",
+        "com.july.release": "0.4.0",
+        "com.july.resource": "0.1.1",
+        "com.july.resource.yooasset": "0.2.3",
+        "com.cysharp.unitask": "2.5.10",
+        "com.code-philosophy.hybridclr": "8.7.0",
+        "com.july.analytics": "0.3.0",
+        "com.july.analytics.thinkingdata": "0.1.2",
+        "com.july.persistence": "0.3.1",
+        "com.july.ui": "0.2.26",
+        "com.tuyoogame.yooasset": "2.3.12"
+      },
+      "hash": "f420286bc5da9e33986a689432b5b10af6e30b27"
+    },
+    "com.july.release": {
+      "version": "https://github.com/XjVoilin/JulyFramework.git?path=/Packages/com.july.release#com.july.release@0.4.4",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {
+        "com.july.build": "0.3.0",
+        "com.july.build.hybridclr": "0.1.1",
+        "com.july.config": "0.2.0",
+        "com.july.json": "0.1.0",
+        "com.july.logging": "0.1.0",
+        "com.july.persistence": "0.3.1",
+        "com.july.resource.yooasset": "0.2.3",
+        "com.unity.textmeshpro": "3.0.9",
+        "com.cysharp.unitask": "2.5.10",
+        "com.code-philosophy.hybridclr": "8.7.0",
+        "com.tuyoogame.yooasset": "2.3.12"
+      },
+      "hash": "4921194c78a551c8c1fb3e038eaba9f52db1941d"
+    },
+    "com.july.networking": {
+      "version": "https://github.com/XjVoilin/JulyFramework.git?path=/Packages/com.july.networking#com.july.networking@0.3.2",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {
+        "com.july.logging": "0.1.0",
+        "com.july.arch": "0.1.0",
+        "com.cysharp.unitask": "2.5.10",
+        "com.unity.modules.unitywebrequest": "1.0.0",
+        "com.july.json": "0.1.0"
+      },
+      "hash": "c9a22f560f26e339b112d742ea7c16df6a9f1bae"
     }
   }
 }

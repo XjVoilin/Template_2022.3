@@ -26,7 +26,7 @@ MonoBehaviour:
     Groups:
     - GroupName: Default Group
       GroupDesc: 
-      AssetTags: 
+      AssetTags: Startup
       ActiveRuleName: EnableGroup
       Collectors:
       - CollectPath: Assets/Game/Res/Configs
@@ -37,8 +37,8 @@ MonoBehaviour:
         FilterRuleName: CollectAll
         AssetTags: 
         UserData: 
-      - CollectPath: Assets/Game/Scenes
-        CollectorGUID: 462d87c7a742a4dc1a6a8043fb68cd43
+      - CollectPath: Assets/Game/Scenes/Main.unity
+        CollectorGUID: 47abbc04c8c3c4894be4724aaa800aef
         CollectorType: 0
         AddressRuleName: AddressByFileName
         PackRuleName: PackDirectory
@@ -53,9 +53,9 @@ MonoBehaviour:
         FilterRuleName: CollectAll
         AssetTags: 
         UserData:
-    - GroupName: HotUpdate
+    - GroupName: HotFix
       GroupDesc: HybridCLR hot-update assemblies
-      AssetTags: HotUpdate
+      AssetTags: HotFix
       ActiveRuleName: EnableGroup
       Collectors:
       - CollectPath: Assets/Game/Res/HotUpdateDlls
@@ -64,11 +64,11 @@ MonoBehaviour:
         AddressRuleName: AddressByFileName
         PackRuleName: PackDirectory
         FilterRuleName: CollectAll
-        AssetTags: HotUpdate
+        AssetTags: HotFix
         UserData:
-    - GroupName: AOTMetadata
+    - GroupName: AOTMeta
       GroupDesc: HybridCLR supplemental AOT metadata
-      AssetTags: AOTMetadata
+      AssetTags: AotMeta
       ActiveRuleName: EnableGroup
       Collectors:
       - CollectPath: Assets/Game/Res/AOTMetaDlls
@@ -77,5 +77,5 @@ MonoBehaviour:
         AddressRuleName: AddressByFileName
         PackRuleName: PackDirectory
         FilterRuleName: CollectAll
-        AssetTags: AOTMetadata
+        AssetTags: AotMeta
         UserData: 

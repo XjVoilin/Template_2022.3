@@ -151,34 +151,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 577695ec8c0446ac9108be0576802d9a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _gameConfig:
-    PlayMode: 0
-    CdnUrl: 
-    Analytics:
-      Enabled: 0
-      AppId: 
-      ServerUrl: 
-      DebugMode: 1
-      UploadUnityErrors: 1
-    UI:
-      DesignResolution: {x: 1080, y: 1920}
-      ScreenMatchMode: 0
-      UICameraDepth: 10
-      CameraOrthographicSize: 9.6
-      CameraNearClip: 0.3
-      PlaneDistance: 100
-      MaskAlpha: 0.97
-    Audio:
-      DefaultClickSfx: CommonBtnClick
-    Tip:
-      TipPrefabPath: UITipItem
-      PoolMaxSize: 10
-      DefaultDuration: 2
-      FadeOutDuration: 0.3
-      Spacing: 10
-      MoveUpDuration: 0.2
-      EnterOffset: 50
-      EnterDuration: 0.2
+  _gameConfig: {fileID: 11400000, guid: 955463accf654580a2e3c16a66bf532d, type: 2}
+  _launchView: {fileID: 2100000002}
 --- !u!4 &1152170808
 Transform:
   m_ObjectHideFlags: 0
@@ -198,4 +172,44 @@ Transform:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
+  - {fileID: 2100000001}
   - {fileID: 1152170808}
+--- !u!1 &2100000000
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2100000001}
+  - component: {fileID: 2100000002}
+  m_Layer: 5
+  m_Name: LaunchView
+  m_TagString: Untagged
+  m_IsActive: 1
+--- !u!4 &2100000001
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2100000000}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+--- !u!114 &2100000002
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2100000000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5f5054efb5f4db1bbffb9099b56d1a2, type: 3}
+  m_Name:
+  m_EditorClassIdentifier:
